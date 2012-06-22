@@ -156,7 +156,7 @@ annotate' opts args@[_] repository = do
           showPath (n, File _) = BC.pack (path </> n)
           showPath (n, _) = BC.concat [BC.pack (path </> n), "/"]
       putStrLn $ fmt (BC.intercalate "\n" $ map showPath $
-                        map (\(x,y) -> (anchorPath "" x, y)) $ list s') $
+                       map (\(x,y) -> (anchorPath "" x, y)) $ list s') $
         A.annotateDirectory (invertRL patches) (fp2fn $ "./" ++ path) subs
     Just (File b) -> do con <- BC.concat `fmap` toChunks `fmap` readBlob b
                         putStrLn $ fmt con $ A.annotate (invertRL patches) (fp2fn $ "./" ++ path) con

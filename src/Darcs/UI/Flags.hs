@@ -170,6 +170,7 @@ data DarcsFlag = Help | ListOptions | NoTest | Test
                | NullFlag
                | RecordRollback | NoRecordRollback
                | NoAmendUnrecord | AmendUnrecord
+               | PatchIndexFlag
                  deriving ( Eq, Show )
 
 compression :: [DarcsFlag]
