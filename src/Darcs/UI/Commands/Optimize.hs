@@ -39,9 +39,10 @@ import qualified Data.ByteString.Lazy as BL
 
 
 import Darcs.Patch.PatchInfoAnd ( extractHash )
-import Darcs.UI.Commands ( DarcsCommand(..), nodefaults, amInRepository )
+import Darcs.UI.Commands ( DarcsCommand(..), nodefaults, amInRepository)
 import Darcs.UI.Arguments
     ( DarcsFlag( UpgradeFormat
+               , UseHashedInventory
                , Compress
                , UnCompress
                , NoCompress
@@ -49,6 +50,7 @@ import Darcs.UI.Arguments
                , Relink
                , OptimizePristine
                , OptimizeHTTP
+               , PatchIndexFlag
                )
      , reorderPatches
      , uncompressNocompress
@@ -60,6 +62,7 @@ import Darcs.UI.Arguments
      , umaskOption
      , optimizePristine
      , optimizeHTTP
+     , patchIndex
      )
 import Darcs.Repository.Prefs ( getPreflist, getCaches )
 import Darcs.Repository
@@ -78,6 +81,7 @@ import Darcs.Witnesses.Ordered
      , bunchFL
      , lengthRL
      )
+import Darcs.Repository.InternalTypes ( Repository(..) )
 import Darcs.Patch ( RepoPatch )
 import Darcs.Patch.Set
     ( newset2RL
@@ -121,6 +125,7 @@ import Darcs.Repository.Format
     , formatHas
     , RepoProperty ( HashedInventory )
     )
+import Darcs.Repository.FileMod
 import qualified Darcs.Repository.HashedRepo as HashedRepo
 import Darcs.Repository.State ( readRecorded )
 
@@ -192,8 +197,10 @@ optimize = DarcsCommand {
                             , upgradeFormat
                             , optimizePristine
                             , optimizeHTTP
+                            , patchIndex
                             ]
     }
+
 optimizeCmd :: [DarcsFlag] -> [String] -> IO ()
 optimizeCmd origopts _ = do
     when (UpgradeFormat `elem` origopts) optimizeUpgradeFormat
@@ -202,6 +209,7 @@ optimizeCmd origopts _ = do
     when (OptimizeHTTP `elem` origopts) $ doOptimizeHTTP repository
     if OptimizePristine `elem` opts
        then doOptimizePristine repository
+       else if (PatchIndexFlag `elem` opts) then do_filecache opts repository
        else do when (Reorder `elem` opts) $ reorderInventory repository (compression opts) YesUpdateWorking (verbosity opts)
                when (Compress `elem` opts || UnCompress `elem` opts) $
                     optimizeCompression opts
@@ -386,3 +394,6 @@ doOptimizeHTTP repo = flip finally (mapM_ removeFileIfExists
   removeFileIfExists x = do
     ex <- doesFileExist x
     when ex $ removeFile x
+
+do_filecache :: (RepoPatch p, ApplyState p ~ Tree) => [DarcsFlag] -> Repository p wR wU wT -> IO ()
+do_filecache _opts = createOrUpdatePatchIndexDisk
