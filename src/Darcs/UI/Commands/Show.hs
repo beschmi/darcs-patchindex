@@ -28,6 +28,7 @@ import Darcs.UI.Commands.ShowFiles ( showFiles, manifestCmd, toListManifest )
 import Darcs.UI.Commands.ShowTags ( showTags )
 import Darcs.UI.Commands.ShowRepo ( showRepo )
 import Darcs.UI.Commands.ShowIndex ( showIndex, showPristineCmd )
+import Darcs.UI.Commands.ShowPatchIndex ( showPatchIndexAll, showPatchIndexFiles, showPatchIndexStatus )
 
 showDescription :: String
 showDescription = "Show information which is stored by darcs."
@@ -53,7 +54,10 @@ showCommand = SuperCommand {commandProgramName = "darcs",
                                               CommandData showPristine,
                                               CommandData showRepo,
                                               CommandData showAuthors,
-                                              CommandData showTags]
+                                              CommandData showTags,
+                                              CommandData showPatchIndexAll,
+                                              CommandData showPatchIndexFiles,
+                                              CommandData showPatchIndexStatus]
                      }
 
 query :: DarcsCommand

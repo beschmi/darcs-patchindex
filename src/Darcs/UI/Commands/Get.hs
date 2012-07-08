@@ -37,8 +37,8 @@ import Darcs.UI.Commands ( DarcsCommand(..)
                       , commandAlias
                       , putInfo
                       )
-import Darcs.UI.Flags( compression, toMatchFlags, useCache, dryRun, umask, remoteRepos, setDefault , DarcsFlag(Quiet, XMLOutput), usePacks, remoteDarcs, getKind, verbosity )
-import Darcs.Repository.Flags ( UpdateWorking (..) )
+import Darcs.UI.Flags( compression, toMatchFlags, useCache, dryRun, umask, remoteRepos, setDefault , DarcsFlag(Quiet, XMLOutput, NoPatchIndexFlag), usePacks, remoteDarcs, getKind, verbosity )
+import Darcs.Repository.Flags ( UpdateWorking (..), UseCache(..) )
 import Darcs.UI.Arguments ( DarcsFlag( NewRepo
                                   , Lazy
                                   , UseNoWorkingDir
@@ -52,6 +52,8 @@ import Darcs.UI.Arguments ( DarcsFlag( NewRepo
                        , matchOneContext
                        , setScriptsExecutableOption
                        , networkOptions
+                       , patchIndex
+                       , noPatchIndex
                        )
 import qualified Darcs.UI.Arguments as A ( setDefault, usePacks )
 import Darcs.Repository ( Repository
@@ -96,6 +98,7 @@ import Progress ( debugMessage )
 import Printer ( text, errorDoc, ($$) )
 import Darcs.Path ( toFilePath, toPath, ioAbsoluteOrRemote)
 import English ( englishNum, Noun(..) )
+import Darcs.Repository.FileMod( createOrUpdatePatchIndexDisk )
 
 getDescription :: String
 getDescription = "Create a local copy of a repository."
@@ -141,7 +144,7 @@ get = DarcsCommand
     , commandPrereq = contextExists
     , commandGetArgPossibilities = return []
     , commandArgdefaults = nodefaults
-    , commandAdvancedOptions = A.usePacks:networkOptions
+    , commandAdvancedOptions = [A.usePacks, patchIndex, noPatchIndex] ++ networkOptions
     , commandBasicOptions =
          [
            reponame
@@ -168,7 +171,7 @@ getCmd opts [inrepodir] = do
   mysimplename <- makeRepoName opts repodir
   createDirectory mysimplename
   setCurrentDirectory mysimplename
-  createRepository (not $ formatHas Darcs2 rfsource) (UseNoWorkingDir `elem` opts)
+  createRepository (not $ formatHas Darcs2 rfsource) (UseNoWorkingDir `elem` opts) (not $ NoPatchIndexFlag `elem` opts)
   debugMessage "Finished initializing new directory."
   setDefaultrepo repodir (dryRun opts) (remoteRepos opts) (setDefault opts)
 
@@ -181,6 +184,7 @@ getCmd opts [inrepodir] = do
       patchSetToRepository fromrepo patches_to_get (useCache opts) (compression opts) (remoteDarcs opts)
       debugMessage "Finished converting selected patch set to new repository"
     else copyRepoAndGoToChosenVersion opts repodir rfsource
+  unless (NoPatchIndexFlag `elem` opts) $ withRepository NoUseCache $ RepoJob $ createOrUpdatePatchIndexDisk 
 getCmd _ _ = fail "You must provide 'get' with either one or two arguments."
 
 -- | called by getCmd
@@ -207,7 +211,7 @@ copyRepoAndGoToChosenVersion opts repodir rfsource =
      copyRepository r (verbosity opts) (useCache opts) (getKind opts)
                       (compression opts) (dryRun opts)
                       (umask opts) (remoteDarcs opts)
-                      (UseNoWorkingDir `notElem` opts) (usePacks opts)
+                      (UseNoWorkingDir `notElem` opts) (usePacks opts) (not $ NoPatchIndexFlag `elem` opts)
      when (SetScriptsExecutable `elem` opts) setScriptsExecutable
      goToChosenVersion repository opts
      putInfo opts $ text "Finished getting."
@@ -299,7 +303,7 @@ goToChosenVersion repository opts =
        withRepoLock (dryRun opts) (useCache opts) YesUpdateWorking (umask opts) $ RepoJob $ \_ ->
            do _ <- tentativelyRemovePatches repository (compression opts) YesUpdateWorking us'
               tentativelyAddToPending repository (dryRun opts) YesUpdateWorking $ invert $ effect us'
-              finalizeRepositoryChanges repository (dryRun opts) YesUpdateWorking (compression opts)
+              finalizeRepositoryChanges repository (dryRun opts) YesUpdateWorking (compression opts) (not $ NoPatchIndexFlag `elem` opts)
               apply (invert $ effect ps) `catch` \e ->
                   fail ("Couldn't undo patch in working dir.\n" ++ show e)
               when (SetScriptsExecutable `elem` opts) $ setScriptsExecutablePatches (invert $ effect ps)

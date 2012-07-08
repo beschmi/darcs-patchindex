@@ -26,9 +26,9 @@ import Storage.Hashed.Tree( Tree )
 import Darcs.UI.Commands ( DarcsCommand(..), nodefaults, amInHashedRepository )
 import Darcs.UI.Flags( diffingOpts, verbosity, dryRun, useCache, umask, compression )
 import Darcs.Repository.Flags ( UseIndex(..), ScanKnown (..), AllowConflicts(..), ExternalMerge(..), WantGuiPause(..), UpdateWorking(..) )
-import Darcs.UI.Arguments ( DarcsFlag,
+import Darcs.UI.Arguments ( DarcsFlag (NoPatchIndexFlag),
                          ignoretimes, workingRepoDir,
-                        allInteractive, umaskOption, unified
+                        allInteractive, umaskOption, unified, patchIndex, noPatchIndex
                       )
 import Darcs.Repository ( SealedPatchSet, Repository, withRepoLock, RepoJob(..),
                           unrevertUrl, considerMergeToWorking,
@@ -83,7 +83,7 @@ unrevert = DarcsCommand {commandProgramName = "darcs",
                          commandPrereq = amInHashedRepository,
                          commandGetArgPossibilities = return [],
                          commandArgdefaults = nodefaults,
-                         commandAdvancedOptions = [umaskOption],
+                         commandAdvancedOptions = [umaskOption, patchIndex, noPatchIndex],
                          commandBasicOptions = [ignoretimes,
                                                   allInteractive,
                                                   workingRepoDir,
@@ -106,7 +106,7 @@ unrevertCmd opts [] = withRepoLock (dryRun opts) (useCache opts) YesUpdateWorkin
   (p :> skipped) <- runSelection (selectChanges First pw) context
   tentativelyAddToPending repository (dryRun opts) YesUpdateWorking p
   withSignalsBlocked $
-      do finalizeRepositoryChanges repository (dryRun opts) YesUpdateWorking (compression opts)
+      do finalizeRepositoryChanges repository (dryRun opts) YesUpdateWorking (compression opts) (not $ NoPatchIndexFlag `elem` opts)
          _ <- applyToWorking repository (verbosity opts) p `catch` \e ->
              fail ("Error applying unrevert to working directory...\n"
                    ++ show e)

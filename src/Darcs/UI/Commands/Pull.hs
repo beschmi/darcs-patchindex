@@ -48,6 +48,7 @@ import Darcs.UI.Arguments
         , Quiet
         , AllowUnrelatedRepos
         , SetScriptsExecutable
+        , NoPatchIndexFlag
         )
     , allInteractive
     , allowUnrelatedRepos
@@ -71,6 +72,8 @@ import Darcs.UI.Arguments
     , umaskOption
     , useExternalMerge
     , workingRepoDir
+    , patchIndex
+    , noPatchIndex
     )
 import qualified Darcs.UI.Arguments as A ( dryRun, setDefault )
 import Darcs.UI.Flags( doReverse, isInteractive, verbosity,   dryRun, umask, useCache, compression, setScriptsExecutable, runTest, leaveTestDir, remoteRepos, setDefault, allowConflicts, diffingOpts, externalMerge, allowConflicts, wantGuiPause )
@@ -178,6 +181,8 @@ fetch = DarcsCommand {
          commandAdvancedOptions =
             [ repoCombinator
             , remoteRepo
+            , patchIndex
+            , noPatchIndex
             ] ++ networkOptions,
          commandBasicOptions = [matchSeveral,
                                   allInteractive]
@@ -331,7 +336,7 @@ applyPatches opts repository (_, Sealed (us' :\/: to_be_pulled)) =
                case yn of
                  'y' -> return ()
                  _ -> exitWith rc
-           withGutsOf repository $ do finalizeRepositoryChanges repository (dryRun opts) YesUpdateWorking (compression opts)
+           withGutsOf repository $ do finalizeRepositoryChanges repository (dryRun opts) YesUpdateWorking (compression opts) (not $ NoPatchIndexFlag `elem` opts)
                                       _ <- revertable $ applyToWorking repository (verbosity opts) pw
                                       when (SetScriptsExecutable `elem` opts) $ setScriptsExecutablePatches pw
                                       return ()

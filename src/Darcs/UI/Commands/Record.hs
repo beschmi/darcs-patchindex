@@ -94,6 +94,7 @@ import Darcs.UI.Arguments
                , PatchName
                , AskDeps
                , All
+               , NoPatchIndexFlag
                )
     , fileHelpAuthor
     , getAuthor
@@ -114,6 +115,8 @@ import Darcs.UI.Arguments
     , logfile
     , setScriptsExecutableOption
     , unified
+    , patchIndex
+    , noPatchIndex
     )
 import qualified Darcs.UI.Arguments as A ( leaveTestDir )
 import Darcs.UI.Flags
@@ -156,7 +159,7 @@ record = DarcsCommand {commandProgramName = "darcs",
                        commandAdvancedOptions = [logfile, rmlogfile,
                                                    nocompress, ignoretimes,
                                                    umaskOption,
-                                                   setScriptsExecutableOption],
+                                                   setScriptsExecutableOption, patchIndex, noPatchIndex],
                        commandBasicOptions = [patchnameOption, author,
                                                test,
                                                A.leaveTestDir,
@@ -283,7 +286,7 @@ doActualRecord repository opts name date my_author my_log logf deps chs =
                      case yn of
                        'y' -> return ()
                        _ -> exitWith rc `clarifyErrors` failuremessage
-                 withGutsOf repository (finalizeRepositoryChanges repository (dryRun opts) YesUpdateWorking (compression opts) )
+                 withGutsOf repository (finalizeRepositoryChanges repository (dryRun opts) YesUpdateWorking (compression opts) (not $ NoPatchIndexFlag `elem` opts))
                                     `clarifyErrors` failuremessage
                  debugMessage "Syncing timestamps..."
                  when (isJust logf) $ removeFile (fromJust logf)

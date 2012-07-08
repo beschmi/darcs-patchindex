@@ -173,14 +173,12 @@ import qualified Darcs.Repository.HashedRepo as HashedRepo
                             , applyToTentativePristine
                             , writeAndReadPatch
                             , addToTentativeInventory
-                            , readRepo
                             , readTentativeRepo
                             , readRepoUsingSpecificInventory
                             , cleanPristine
                             )
 import qualified Darcs.Repository.Old as Old
-                            ( readOldRepo
-                            , revertTentativeChanges
+                            ( revertTentativeChanges
                             , oldRepoFailMsg
                             )
 import Darcs.Repository.Flags
@@ -276,7 +274,8 @@ import System.Mem( performGC )
 
 import qualified Storage.Hashed.Tree as Tree
 import Storage.Hashed.Tree ( Tree )
-
+import Darcs.Repository.FileMod ( createOrUpdatePatchIndexDisk )
+import Darcs.Repository.Read ( readRepo )
 #include "impossible.h"
 
 -- | The status of a given directory: is it a darcs repository?
@@ -466,18 +465,6 @@ siftForPending simple_ps =
                       Right (sofar' :> _) -> sfp sofar' ps
                       Left _ -> sfp (p:>:sofar) ps
             sfp sofar (p:<:ps) = sfp (p:>:sofar) ps
-
--- @todo: we should not have to open the result of HashedRepo and
--- seal it.  Instead, update this function to work with type witnesses
--- by fixing DarcsRepo to match HashedRepo in the handling of
--- Repository state.
-readRepo :: (RepoPatch p, ApplyState p ~ Tree)
-         => Repository p wR wU wT
-         -> IO (PatchSet p Origin wR)
-readRepo repo@(Repo r rf _)
-    | formatHas HashedInventory rf = HashedRepo.readRepo repo r
-    | otherwise = do Sealed ps <- Old.readOldRepo r
-                     return $ unsafeCoerceP ps
 
 readTentativeRepo :: (RepoPatch p, ApplyState p ~ Tree)
                   => Repository p wR wU wT
@@ -776,10 +763,11 @@ finalizeRepositoryChanges :: (RepoPatch p, ApplyState p ~ Tree)
                           -> DryRun
                           -> UpdateWorking
                           -> Compression
+                          -> Bool
                           -> IO ()
-finalizeRepositoryChanges (Repo _ _ _) YesDryRun _ _
+finalizeRepositoryChanges (Repo _ _ _) YesDryRun _ _ _
     = bug "finalizeRepositoryChanges called when --dry-run specified"
-finalizeRepositoryChanges repository@(Repo dir rf _) _ updateWorking compr
+finalizeRepositoryChanges repository@(Repo dir rf _) _ updateWorking compr patchIndex
     | formatHas HashedInventory rf =
         withCurrentDirectory dir $ do
             debugMessage "Finalizing changes..."
@@ -787,6 +775,7 @@ finalizeRepositoryChanges repository@(Repo dir rf _) _ updateWorking compr
                  HashedRepo.finalizeTentativeChanges repository compr
                  finalizePending repository updateWorking
             debugMessage "Done finalizing changes..."
+            when patchIndex $ createOrUpdatePatchIndexDisk repository
     | otherwise = fail Old.oldRepoFailMsg
 
 revertRepositoryChanges :: RepoPatch p

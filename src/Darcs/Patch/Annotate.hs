@@ -211,6 +211,7 @@ annotateDirectory patches inipath inicontent = annotate' patches initial
                         }
 
 
+
 machineFormat :: B.ByteString -> Annotated -> String
 machineFormat d a = unlines [ case i of
                                  Just inf -> makeFilename inf

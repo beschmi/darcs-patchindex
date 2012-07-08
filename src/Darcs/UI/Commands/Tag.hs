@@ -23,7 +23,7 @@ import Darcs.UI.Commands ( DarcsCommand(..), nodefaults, amInHashedRepository )
 import Darcs.UI.Commands.Record ( getDate, getLog )
 import Darcs.UI.Arguments ( nocompress, umaskOption, patchnameOption, author,
                          pipeInteractive, askLongComment,
-                         workingRepoDir, getAuthor )
+                         workingRepoDir, getAuthor, patchIndex, noPatchIndex )
 import Darcs.Patch.PatchInfoAnd ( n2pia )
 import Darcs.Repository ( withRepoLock, Repository, RepoJob(..), readRepo,
                     tentativelyAddPatch, finalizeRepositoryChanges,
@@ -76,7 +76,7 @@ tag = DarcsCommand {commandProgramName = "darcs",
                     commandPrereq = amInHashedRepository,
                     commandGetArgPossibilities = return [],
                     commandArgdefaults = nodefaults,
-                    commandAdvancedOptions = [nocompress,umaskOption],
+                    commandAdvancedOptions = [nocompress,umaskOption, patchIndex, noPatchIndex],
                     commandBasicOptions = [patchnameOption, author,
                                             pipeInteractive,
                                             askLongComment,
@@ -92,7 +92,7 @@ tagCmd opts args = withRepoLock (dryRun opts) (useCache opts) YesUpdateWorking (
     let mypatch = infopatch myinfo NilFL
     _ <- tentativelyAddPatch repository (compression opts) (verbosity opts) YesUpdateWorking
              $ n2pia $ adddeps mypatch deps
-    finalizeRepositoryChanges repository (dryRun opts) YesUpdateWorking (compression opts)
+    finalizeRepositoryChanges repository (dryRun opts) YesUpdateWorking (compression opts) (not $ NoPatchIndexFlag `elem` opts)
     maybe (return ()) removeFile mlogf
     putStrLn $ "Finished tagging patch '"++name++"'"
   where  get_name_log ::(Patchy prim, PrimPatch prim) => FL prim wA wA -> [DarcsFlag] -> [String] -> IO (String, [String], Maybe String)

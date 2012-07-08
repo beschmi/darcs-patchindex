@@ -42,6 +42,7 @@ import Darcs.UI.Arguments
     ( DarcsFlag ( All
                 , AmendUnrecord
                 , Unified
+                , NoPatchIndexFlag
                 )
     , fixSubPaths
     , allInteractive
@@ -61,6 +62,8 @@ import Darcs.UI.Arguments
     , setScriptsExecutableOption
     , amendUnrecord
     , unified
+    , patchIndex
+    , noPatchIndex
     )
 import qualified Darcs.UI.Arguments as A ( leaveTestDir )
 import Darcs.UI.Commands
@@ -177,6 +180,8 @@ amendrecord = DarcsCommand
         , ignoretimes
         , umaskOption
         , setScriptsExecutableOption
+        , patchIndex
+        , noPatchIndex
         ]
     , commandBasicOptions =
         [
@@ -293,7 +298,7 @@ addChangesToPatch opts repository oldp chs =
                case yn of
                  'y' -> return ()
                  _ -> exitWith rc `clarifyErrors` failmsg
-           finalizeRepositoryChanges repository'' (dryRun opts) YesUpdateWorking (compression opts) `clarifyErrors` failmsg
+           finalizeRepositoryChanges repository'' (dryRun opts) YesUpdateWorking (compression opts) (not $ NoPatchIndexFlag `elem` opts) `clarifyErrors` failmsg
            maybe (return ()) removeFile mlogf
            putStrLn "Finished amending patch:"
            putDocLn $ description newp

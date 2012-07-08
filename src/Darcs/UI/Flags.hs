@@ -168,6 +168,8 @@ data DarcsFlag = Help | ListOptions | NoTest | Test
                | Check | Repair | JustThisRepo
                | NullFlag
                | NoAmendUnrecord | AmendUnrecord
+               | PatchIndexFlag
+               | NoPatchIndexFlag
                  deriving ( Eq, Show )
 
 compression :: [DarcsFlag]

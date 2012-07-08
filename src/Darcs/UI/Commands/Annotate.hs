@@ -32,6 +32,8 @@ import Darcs.UI.Arguments
     , creatorhash
     , fixSubPaths
     , matchOne
+    , patchIndex
+    , noPatchIndex
     )
 import Darcs.UI.Flags ( isUnified, toMatchFlags, useCache, compression )
 import Storage.Hashed.Plain( readPlainTree )
@@ -47,6 +49,7 @@ import Darcs.Patch.Set ( newset2RL )
 import Darcs.Patch ( RepoPatch, Named, patch2patchinfo, xmlSummary, invertRL )
 import Darcs.Patch.Apply( ApplyState )
 import qualified Darcs.Patch ( summary )
+import Darcs.Patch.PatchInfoAnd ( PatchInfoAnd(..) )
 import qualified Data.ByteString.Char8 as BC ( pack, concat, intercalate )
 import Data.ByteString.Lazy ( toChunks )
 import Darcs.UI.PrintPatch ( printPatch, contextualPrintPatch )
@@ -56,13 +59,17 @@ import Darcs.Patch.Info ( humanFriendly, toXml, showPatchInfo )
 import Darcs.Patch.Match ( matchPatch, haveNonrangeMatch, getNonrangeMatchS  )
 import Darcs.Repository.Match ( getFirstMatch, getOnePatchset )
 import Darcs.Repository.Lock ( withTempDir )
+import Darcs.Repository.FileMod ( getPatches )
+import Darcs.Repository.FileModTypes ( make_patchID )
 import Darcs.Patch.Witnesses.Sealed ( Sealed2(..), Sealed(..), seal )
+import Darcs.Patch.Witnesses.Ordered ( RL(..) )
 import qualified Darcs.Patch.Annotate as A
 import Printer ( putDocLn, Doc )
 
 import Storage.Hashed.Tree( Tree, TreeItem(..), readBlob, list, expand )
 import Storage.Hashed.Monad( findM, virtualTreeIO )
 import Darcs.Path( floatPath, anchorPath, fp2fn, toFilePath )
+
 #include "impossible.h"
 
 annotateDescription :: String
@@ -92,7 +99,7 @@ annotate = DarcsCommand {commandProgramName = "darcs",
                          commandPrereq = amInHashedRepository,
                          commandGetArgPossibilities = listRegisteredFiles,
                          commandArgdefaults = nodefaults,
-                         commandAdvancedOptions = [],
+                         commandAdvancedOptions = [patchIndex, noPatchIndex],
                          commandBasicOptions = [summary,unified,
                                                  machineReadable,
                                                  xmloutput,
@@ -135,15 +142,16 @@ annotate' opts args@[_] repository = do
   (origpath:_) <- fixSubPaths opts args
   recorded <- readRecorded repository
 
-  (Sealed patches, initial, path) <-
+  (patches, initial, path, patch_id) <-
     if haveNonrangeMatch matchFlags
        then do Sealed x <- getOnePatchset repository matchFlags
                let fn = [fp2fn $ toFilePath origpath]
                    nonRangeMatch = getNonrangeMatchS matchFlags r
                    (_, [path], _) = withFileNames Nothing fn nonRangeMatch
+                   patch_id = Just $ (\((PIAP patchinfo _):<:_) -> make_patchID patchinfo) $ newset2RL x
                initial <- snd `fmap` virtualTreeIO (getNonrangeMatchS matchFlags r) recorded
-               return $ (seal $ newset2RL x, initial, toFilePath path)
-       else return $ (seal $ newset2RL r, recorded, toFilePath origpath)
+               return $ (seal $ newset2RL x, initial, toFilePath path, patch_id)
+       else return $ (seal $ newset2RL r, recorded, "./" ++ toFilePath origpath, Nothing)
 
   found <- findM initial (floatPath $ toFilePath path)
   -- TODO need to decide about the --machine flag
@@ -155,11 +163,19 @@ annotate' opts args@[_] repository = do
       let subs = map (fp2fn . (path </>) . anchorPath "" . fst) $ list s'
           showPath (n, File _) = BC.pack (path </> n)
           showPath (n, _) = BC.concat [BC.pack (path </> n), "/"]
+      (Sealed ans_patches) <-
+         if NoPatchIndexFlag `elem` opts
+            then return patches
+            else getPatches repository subs patch_id
       putStrLn $ fmt (BC.intercalate "\n" $ map showPath $
-                        map (\(x,y) -> (anchorPath "" x, y)) $ list s') $
-        A.annotateDirectory (invertRL patches) (fp2fn $ "./" ++ path) subs
-    Just (File b) -> do con <- BC.concat `fmap` toChunks `fmap` readBlob b
-                        putStrLn $ fmt con $ A.annotate (invertRL patches) (fp2fn $ "./" ++ path) con
+                       map (\(x,y) -> (anchorPath "" x, y)) $ list s') $
+        A.annotateDirectory (invertRL ans_patches) (fp2fn path) subs
+    Just (File b) -> do (Sealed ans_patches) <-
+                           if NoPatchIndexFlag `elem` opts
+                              then return patches
+                              else getPatches repository [fp2fn path] patch_id
+                        con <- BC.concat `fmap` toChunks `fmap` readBlob b
+                        putStrLn $ fmt con $ A.annotate (invertRL ans_patches) (fp2fn path) con
     Just (Stub _ _) -> impossible
 
 annotate' _ _ _ = fail "annotate accepts at most one argument"

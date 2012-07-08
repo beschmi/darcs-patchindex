@@ -150,7 +150,7 @@ undoItNow opts repo (_ :> prims) =
                          NilFL (rbp :>: NilFL)
       tentativelyAddToPending repo (dryRun opts) YesUpdateWorking pw
       withGutsOf repo $ do
-        finalizeRepositoryChanges repo (dryRun opts) YesUpdateWorking (compression opts)
+        finalizeRepositoryChanges repo (dryRun opts) YesUpdateWorking (compression opts) False
         _ <- applyToWorking repo (verbosity opts) pw `catch` \e ->
             fail ("error applying rolled back patch to working directory\n"
                   ++ show e)

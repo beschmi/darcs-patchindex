@@ -154,6 +154,8 @@ module Darcs.UI.Arguments
     , getOutput
     , usePacks
     , amendUnrecord
+    , patchIndex
+    , noPatchIndex
     ) where
 
 import System.Console.GetOpt
@@ -395,6 +397,8 @@ getContent AmendUnrecord = NoContent
 getContent NoAmendUnrecord = NoContent
 getContent UseWorkingDir = NoContent
 getContent UseNoWorkingDir = NoContent
+getContent PatchIndexFlag = NoContent
+getContent NoPatchIndexFlag = NoContent
 
 getContentString :: DarcsFlag -> Maybe String
 getContentString f =
@@ -610,6 +614,16 @@ maybeFixSubPaths flags fs = withCurrentDirectory o $ do
 fixSubPaths :: [DarcsFlag] -> [FilePath] -> IO [SubPath]
 fixSubPaths flags fs = nub . catMaybes <$> (maybeFixSubPaths flags $
   filter (not . null) fs)
+
+patchIndex :: DarcsOption
+patchIndex = DarcsSingleOption $
+  DarcsNoArgOption [] ["patch-index"] PatchIndexFlag
+  "create, maintain, and use patch index"
+
+noPatchIndex :: DarcsOption
+noPatchIndex = DarcsSingleOption $
+  DarcsNoArgOption [] ["no-patch-index"] NoPatchIndexFlag
+  "Do not create, maintain, and use patch index"
 
 -- | 'listOptions' is an option which lists the command's arguments
 listOptions :: DarcsOption

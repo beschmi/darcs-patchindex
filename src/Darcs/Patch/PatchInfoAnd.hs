@@ -18,7 +18,7 @@
 {-# LANGUAGE CPP, UndecidableInstances #-} -- XXX Undecidable only in GHC < 7
 
 
-module Darcs.Patch.PatchInfoAnd ( Hopefully, PatchInfoAnd,
+module Darcs.Patch.PatchInfoAnd ( Hopefully, PatchInfoAnd(..),
                          WPatchInfo, unWPatchInfo, compareWPatchInfo,
                          piap, n2pia, patchInfoAndPatch,
                          fmapPIAP, fmapFL_PIAP,

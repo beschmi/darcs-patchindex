@@ -35,7 +35,7 @@ import Darcs.UI.Commands ( DarcsCommand(..), nodefaults, commandAlias, findRepos
 import Darcs.UI.Arguments ( DarcsFlag(GenContext, HumanReadable, MachineReadable,
                                    Interactive, Count,
                                    NumberPatches, XMLOutput, Summary,
-                                   Verbose, Debug),
+                                   Verbose, Debug, NoPatchIndexFlag),
                          fixSubPaths, changesFormat,
                          possiblyRemoteRepoDir, getRepourl,
                          workingRepoDir, onlyToFiles,
@@ -43,7 +43,9 @@ import Darcs.UI.Arguments ( DarcsFlag(GenContext, HumanReadable, MachineReadable
                          matchSeveralOrRange,
                          matchMaxcount, maxCount,
                          allInteractive,
-                         networkOptions
+                         networkOptions,
+                         patchIndex,
+                         noPatchIndex
                       )
 import Darcs.UI.Flags ( doReverse, showChangesOnlyToFiles
     , toMatchFlags, useCache )
@@ -53,6 +55,7 @@ import Darcs.Repository ( PatchSet, PatchInfoAnd,
                           withRepositoryDirectory, RepoJob(..),
                           readRepo, unrecordedChanges )
 import Darcs.Repository.Flags ( UseIndex(..), ScanKnown(..) )
+import Darcs.Repository.InternalTypes ( Repository )
 import Darcs.Patch.Set ( PatchSet(..), newset2RL )
 import Darcs.Patch.Info ( toXml, showPatchInfo, escapeXML, PatchInfo )
 import Darcs.Patch.Depends ( findCommonWithThem )
@@ -79,6 +82,7 @@ import Printer ( Doc, putDocLnWith, simplePrinters, (<+>), prefix, text, vcat,
 import Darcs.ColorPrinter ( fancyPrinters )
 import Progress ( setProgressMode, debugMessage )
 import Darcs.UI.SelectChanges ( viewChanges )
+import Darcs.Repository.FileMod ( filterPatches )
 import Storage.Hashed.Tree( Tree )
 
 changesDescription :: String
@@ -112,7 +116,9 @@ changes = DarcsCommand {commandProgramName = "darcs",
                                                  changesReverse,
                                                  possiblyRemoteRepoDir,
                                                  workingRepoDir,
-                                                 allInteractive]}
+                                                 allInteractive,
+                                                 patchIndex,
+                                                 noPatchIndex]}
 
 changesCmd :: [DarcsFlag] -> [String] -> IO ()
 changesCmd opts args
@@ -138,13 +144,13 @@ showChanges opts files =
   let normfp = fn2fp . normPath . fp2fn
       undoUnrecordedOnFPs = effectOnFilePaths (invert unrec)
       recFiles = map normfp . undoUnrecordedOnFPs . map toFilePath <$> files
-      filtered_changes p = maybe_reverse $ getChangesInfo opts recFiles p
+      filtered_changes p = maybe_reverse <$> getChangesInfo opts recFiles repository p
   debugMessage "About to read the repository..."
   patches <- readRepo repository
   debugMessage "Done reading the repository."
   if Interactive `elem` opts
-    then do let (fp_and_fs, _, _) = filtered_changes patches
-                fp = map fst fp_and_fs
+    then do (fp_and_fs, _, _) <- filtered_changes patches
+            let fp = map fst fp_and_fs
             viewChanges opts fp
     else do when (isJust files && not (XMLOutput `elem` opts)) $
                  putStrLn $ "Changes to "++unwords (fromJust recFiles)++":\n"
@@ -152,7 +158,7 @@ showChanges opts files =
             let printers = if XMLOutput `elem` opts then simplePrinters else fancyPrinters
             ps <- readRepo repository -- read repo again to prevent holding onto
                                        -- values forced by filtered_changes
-            putDocLnWith printers $ changelog opts ps $ filtered_changes patches
+            putDocLnWith printers =<< changelog opts ps `fmap` filtered_changes patches
   where maybe_reverse (xs,b,c) = if doReverse opts
                                  then (reverse xs, b, c)
                                  else (xs, b, c)
@@ -178,21 +184,27 @@ changesHelp' =
  "patches, print only those that affect foo.c.\n"
 
 getChangesInfo :: (RepoPatch p, ApplyState p ~ Tree) => [DarcsFlag] -> Maybe [FilePath]
+               -> Repository p wR wU wT
                -> PatchSet p wX wY
-               -> ( [(Sealed2 (PatchInfoAnd p), [FilePath])]
-                  , [(FilePath, FilePath)]
-                  , Maybe Doc )
-getChangesInfo opts plain_fs ps =
+               -> IO ( [(Sealed2 (PatchInfoAnd p), [FilePath])]
+                     , [(FilePath, FilePath)]
+                     , Maybe Doc )
+getChangesInfo opts plain_fs repo ps =
     case (sp1s, sp2s) of
       (Sealed p1s, Sealed p2s) ->
           case findCommonWithThem p2s p1s of
             _ :> us ->
               let ps' = filterRL pf (reverseFL us) in
                 case plain_fs of
-                  Nothing -> foldr (\x xs -> (x, []) -:- xs) ([], [], Nothing) $
+                  Nothing -> return $ foldr (\x xs -> (x, []) -:- xs) ([], [], Nothing) $
                     maybe id take (maxCount opts) ps'
                   Just fs -> let fs' = map (\x -> "./" ++ x) fs in
-                    filterPatchesByNames (maxCount opts) fs' ps'
+                   if not $ NoPatchIndexFlag `elem` opts
+                    then do
+                     ps'' <- filterPatches repo fs' ps'
+                     return $ filterPatchesByNames (maxCount opts) fs' ps''
+                    else
+                     return $ filterPatchesByNames (maxCount opts) fs' ps'
   where matchFlags = toMatchFlags opts
         sp1s = if firstMatch matchFlags
                then matchFirstPatchset matchFlags ps

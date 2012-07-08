@@ -36,7 +36,7 @@ import Darcs.UI.Commands
     )
 import Darcs.UI.CommandsAux ( checkPaths )
 import Darcs.UI.Arguments
-    ( DarcsFlag( All, Interactive, Reply, SetScriptsExecutable )
+    ( DarcsFlag( All, Interactive, Reply, SetScriptsExecutable, NoPatchIndexFlag )
     , allInteractive
     , applyConflictOptions
     , changesReverse
@@ -57,6 +57,8 @@ import Darcs.UI.Arguments
     , useExternalMerge
     , verify
     , workingRepoDir
+    , patchIndex
+    , noPatchIndex
     )
 import qualified Darcs.UI.Arguments as A ( dryRun, leaveTestDir )
 import Darcs.UI.Flags(doHappyForwarding, doReverse, isInteractive, verbosity, useCache, dryRun, compression, umask, setScriptsExecutable, runTest, leaveTestDir, allowConflicts, externalMerge, wantGuiPause, diffingOpts )
@@ -174,6 +176,8 @@ apply = DarcsCommand {commandProgramName = "darcs",
                         , restrictPaths
                         , changesReverse
                         , pauseForGui
+                        , patchIndex
+                        , noPatchIndex
                         ],
                       commandBasicOptions = [verify,
                                               allInteractive]++A.dryRun++
@@ -281,7 +285,7 @@ applyItNow opts from_whom repository us' to_be_applied = do
         case yn of
           'y' -> return ()
           _ -> exitWith rc
-    withSignalsBlocked $ do finalizeRepositoryChanges repository (dryRun opts) YesUpdateWorking (compression opts)
+    withSignalsBlocked $ do finalizeRepositoryChanges repository (dryRun opts) YesUpdateWorking (compression opts) (not $ NoPatchIndexFlag `elem` opts)
                             _ <- applyToWorking repository (verbosity opts) pw `catch` \(e :: SomeException) ->
                                 fail ("Error applying patch to working dir:\n" ++ show e)
                             when (SetScriptsExecutable `elem` opts) $ setScriptsExecutablePatches pw

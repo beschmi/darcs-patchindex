@@ -32,11 +32,13 @@ import Darcs.Patch.PatchInfoAnd ( PatchInfoAnd, n2pia, info, hopefully )
 import Darcs.UI.Commands ( DarcsCommand(..), nodefaults, putInfo )
 import Darcs.UI.Arguments
    ( DarcsFlag
-      ( NewRepo, SetScriptsExecutable, UseFormat2, Quiet, XMLOutput
+      ( NewRepo, SetScriptsExecutable, UseFormat2, Quiet, XMLOutput, NoPatchIndexFlag
       )
    , reponame
    , setScriptsExecutableOption
    , networkOptions
+   , patchIndex
+   , noPatchIndex
    )
 import Darcs.UI.Flags ( verbosity, dryRun, useCache, umask, compression, )
 import Darcs.Repository.Flags ( UpdateWorking(..), UseIndex(..), ScanKnown(..), AllowConflicts(..), ExternalMerge(..), WantGuiPause(..))
@@ -128,7 +130,7 @@ convert = DarcsCommand {commandProgramName = "darcs",
                     commandPrereq = \_ -> return $ Right (),
                     commandGetArgPossibilities = return [],
                     commandArgdefaults = nodefaults,
-                    commandAdvancedOptions = networkOptions,
+                    commandAdvancedOptions = [patchIndex, noPatchIndex] ++ networkOptions,
                     commandBasicOptions = [reponame,setScriptsExecutableOption]}
 
 convertCmd :: [DarcsFlag] -> [String] -> IO ()
@@ -153,7 +155,7 @@ convertCmd orig_opts [inrepodir] = do
   mysimplename <- makeRepoName opts repodir
   createDirectory mysimplename
   setCurrentDirectory mysimplename
-  createRepository False False
+  createRepository False False (not $ NoPatchIndexFlag `elem` opts)
   writeBinFile (darcsdir++"/hashed_inventory") ""
   withRepoLock (dryRun opts) (useCache opts) NoUpdateWorking (umask opts) $ V2Job $ \repository ->
     withRepositoryDirectory (useCache opts) repodir $ V1Job $ \themrepo -> do
@@ -206,7 +208,7 @@ convertCmd orig_opts [inrepodir] = do
                                              (compression opts) (verbosity opts)
                                              (UseIndex, ScanKnown)
                                              NilFL xs
-                            finalizeRepositoryChanges repository2 (dryRun opts) NoUpdateWorking (compression opts)  -- this is to clean out pristine.hashed
+                            finalizeRepositoryChanges repository2 (dryRun opts) NoUpdateWorking (compression opts) (not $ NoPatchIndexFlag `elem` opts) -- this is to clean out pristine.hashed
                             revertRepositoryChanges repository2 (dryRun opts) NoUpdateWorking
                             _ <- revertable $ applyToWorking repository2 (verbosity opts) pw
                             invalidateIndex repository2

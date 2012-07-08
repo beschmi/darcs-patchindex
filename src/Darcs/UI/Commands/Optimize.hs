@@ -49,6 +49,7 @@ import Darcs.UI.Arguments
                , Relink
                , OptimizePristine
                , OptimizeHTTP
+               , PatchIndexFlag
                )
      , reorderPatches
      , uncompressNocompress
@@ -60,6 +61,7 @@ import Darcs.UI.Arguments
      , umaskOption
      , optimizePristine
      , optimizeHTTP
+     , patchIndex
      )
 import Darcs.Repository.Prefs ( getPreflist, getCaches )
 import Darcs.Repository
@@ -121,6 +123,7 @@ import Darcs.Repository.Format
     , formatHas
     , RepoProperty ( HashedInventory )
     )
+import Darcs.Repository.FileMod
 import qualified Darcs.Repository.HashedRepo as HashedRepo
 import Darcs.Repository.State ( readRecorded )
 
@@ -192,6 +195,7 @@ optimize = DarcsCommand {
                             , upgradeFormat
                             , optimizePristine
                             , optimizeHTTP
+                            , patchIndex
                             ]
     }
 optimizeCmd :: [DarcsFlag] -> [String] -> IO ()
@@ -202,6 +206,7 @@ optimizeCmd origopts _ = do
     when (OptimizeHTTP `elem` origopts) $ doOptimizeHTTP repository
     if OptimizePristine `elem` opts
        then doOptimizePristine repository
+       else if (PatchIndexFlag `elem` opts) then createOrUpdatePatchIndexDisk repository
        else do when (Reorder `elem` opts) $ reorderInventory repository (compression opts) YesUpdateWorking (verbosity opts)
                when (Compress `elem` opts || UnCompress `elem` opts) $
                     optimizeCompression opts

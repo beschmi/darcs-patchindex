@@ -17,8 +17,8 @@
 
 module Darcs.UI.Commands.Init ( initialize, initializeCmd ) where
 import Darcs.UI.Commands ( DarcsCommand(..), nodefaults, amNotInRepository )
-import Darcs.UI.Arguments ( DarcsFlag( UseHashedInventory, UseNoWorkingDir)
-                          , workingRepoDir, patchFormatChoices, useWorkingDir )
+import Darcs.UI.Arguments ( DarcsFlag( UseHashedInventory, UseNoWorkingDir, NoPatchIndexFlag)
+                          , workingRepoDir, patchFormatChoices, useWorkingDir, patchIndex, noPatchIndex )
 import Darcs.Repository ( createRepository )
 
 initializeDescription :: String
@@ -52,7 +52,7 @@ initialize = DarcsCommand {commandProgramName = "darcs",
                          commandCommand = initializeCmd,
                          commandGetArgPossibilities = return [],
                          commandArgdefaults = nodefaults,
-                         commandAdvancedOptions = [],
+                         commandAdvancedOptions = [patchIndex, noPatchIndex],
 
                          commandBasicOptions = [patchFormatChoices,
                                                 useWorkingDir,
@@ -60,4 +60,4 @@ initialize = DarcsCommand {commandProgramName = "darcs",
 
 initializeCmd :: [DarcsFlag] -> [String] -> IO ()
 initializeCmd opts _ =
-  createRepository (UseHashedInventory `elem` opts) (UseNoWorkingDir `elem` opts)
+  createRepository (UseHashedInventory `elem` opts) (UseNoWorkingDir `elem` opts) (not $ NoPatchIndexFlag `elem` opts)

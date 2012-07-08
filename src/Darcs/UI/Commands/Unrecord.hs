@@ -42,7 +42,7 @@ import Darcs.UI.Commands
     , amInHashedRepository
     )
 import Darcs.UI.Arguments
-    ( DarcsFlag
+    ( DarcsFlag ( NoPatchIndexFlag )
     , output
     , outputAutoName
     , getOutput
@@ -55,6 +55,8 @@ import Darcs.UI.Arguments
     , umaskOption
     , summary
     , changesReverse
+    , patchIndex
+    , noPatchIndex
     )
 import qualified Darcs.UI.Arguments as A ( dryRun )
 import Darcs.UI.Flags
@@ -114,7 +116,7 @@ unrecord = DarcsCommand {commandProgramName = "darcs",
                          commandGetArgPossibilities = return [],
                          commandArgdefaults = nodefaults,
                          commandAdvancedOptions =
-                             [nocompress,umaskOption,changesReverse],
+                             [nocompress,umaskOption,changesReverse, patchIndex, noPatchIndex],
                          commandBasicOptions = [matchSeveralOrLast,
                                                  depsSel,
                                                  allInteractive,
@@ -139,7 +141,7 @@ unrecordCmd opts _ = withRepoLock (dryRun opts) (useCache opts) YesUpdateWorking
   setEnvDarcsPatches to_unrecord
   invalidateIndex repository
   withGutsOf repository $ do _ <- tentativelyRemovePatches repository (compression opts) YesUpdateWorking to_unrecord
-                             finalizeRepositoryChanges repository (dryRun opts) YesUpdateWorking (compression opts)
+                             finalizeRepositoryChanges repository (dryRun opts) YesUpdateWorking (compression opts) (not $ NoPatchIndexFlag `elem` opts)
   putStrLn "Finished unrecording."
 
 getLastPatches :: RepoPatch p => [MatchFlag] -> PatchSet p Origin wR
@@ -240,7 +242,7 @@ genericObliterateCmd cmdname opts _ = withRepoLock (dryRun opts) (useCache opts)
         withGutsOf repository $
                              do _ <- tentativelyRemovePatches repository (compression opts) YesUpdateWorking removed
                                 tentativelyAddToPending repository (dryRun opts) YesUpdateWorking $ invert $ effect removed
-                                finalizeRepositoryChanges repository (dryRun opts) YesUpdateWorking (compression opts)
+                                finalizeRepositoryChanges repository (dryRun opts) YesUpdateWorking (compression opts) (not $ NoPatchIndexFlag `elem` opts)
                                 debugMessage "Applying patches to working directory..."
                                 _ <- applyToWorking repository (verbosity opts) (invert p_after_pending) `catch` \e ->
                                     fail ("Couldn't undo patch in working dir.\n" ++ show e)

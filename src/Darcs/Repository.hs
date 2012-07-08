@@ -290,13 +290,13 @@ import qualified Codec.Archive.Tar as Tar
 import Codec.Compression.GZip ( compress, decompress )
 import qualified Data.ByteString.Char8 as BS
 import qualified Data.ByteString.Lazy.Char8 as BL
-
+import Darcs.Repository.FileMod (createOrUpdatePatchIndexDisk)
 #include "impossible.h"
 
 
--- @createRepository useFormat1 useNoWorkingDir@
-createRepository :: Bool -> Bool -> IO ()
-createRepository useFormat1 useNoWorkingDir = do
+-- @createRepository useFormat1 useNoWorkingDir patchIndex@
+createRepository :: Bool -> Bool -> Bool -> IO ()
+createRepository useFormat1 useNoWorkingDir createPatchIndex = do
   createDirectory darcsdir `catch`
       (\e-> if isAlreadyExistsError e
             then fail "Tree has already been initialized!"
@@ -314,6 +314,7 @@ createRepository useFormat1 useNoWorkingDir = do
   writeRepoFormat repoFormat (darcsdir++"/format")
   writeBinFile (darcsdir++"/hashed_inventory") ""
   writePristine "." emptyTree
+  when createPatchIndex $ withRepository NoUseCache $ RepoJob $ \repo -> createOrUpdatePatchIndexDisk repo
 
 data RepoSort = Hashed | Old
 
@@ -358,15 +359,15 @@ copyRepository :: forall p wR wU wT. (RepoPatch p, ApplyState (PrimOf p) ~ Tree,
                -> GetKind -> Compression
                -> DryRun
                -> UMask -> RemoteDarcs
-               -> Bool -> Bool -> IO ()
-copyRepository fromRepo@(Repo fromDir _ _) v uc gk compr dry um rdarcs withWorkingDir usePacks = do
+               -> Bool -> Bool -> Bool -> IO ()
+copyRepository fromRepo@(Repo fromDir _ _) v uc gk compr dry um rdarcs withWorkingDir usePacks patchIndex = do
   debugMessage "Copying prefs"
   copyFileOrUrl rdarcs (fromDir ++ "/" ++ darcsdir ++ "/prefs/prefs")
     (darcsdir ++ "/prefs/prefs") (MaxAge 600) `catchall` return ()
   -- try packs for remote repositories
   if (not . isFile) fromDir && usePacks
-    then copyPackedRepository    fromRepo v uc gk compr dry um rdarcs withWorkingDir
-    else copyNotPackedRepository fromRepo v uc gk compr dry um rdarcs withWorkingDir
+    then copyPackedRepository    fromRepo v uc gk compr dry um rdarcs withWorkingDir patchIndex
+    else copyNotPackedRepository fromRepo v uc gk compr dry um rdarcs withWorkingDir patchIndex
 
 putInfo :: Verbosity -> Doc -> IO ()
 putInfo Quiet _ = return ()
@@ -379,8 +380,9 @@ copyNotPackedRepository :: forall p wR wU wT. (RepoPatch p, ApplyState p ~ Tree)
                         -> DryRun
                         -> UMask -> RemoteDarcs
                         -> Bool
+                        -> Bool
                         -> IO ()
-copyNotPackedRepository fromrepository@(Repo _ rffrom _) verb useCache getKind compression dryRun umask rdarcs withWorkingDir = do
+copyNotPackedRepository fromrepository@(Repo _ rffrom _) verb useCache getKind compression dryRun umask rdarcs withWorkingDir patchIndex = do
   copyInventory fromrepository useCache rdarcs compression
   debugMessage "Grabbing lock in new repository..."
   withRepoLock dryRun useCache YesUpdateWorking umask
@@ -397,7 +399,7 @@ copyNotPackedRepository fromrepository@(Repo _ rffrom _) verb useCache getKind c
       replacePristine torepository emptyTree
       let patchesToApply = progressFL "Applying patch" $ newset2FL local_patches
       sequence_ $ mapFL applyToTentativePristine $ bunchFL 100 patchesToApply
-      finalizeRepositoryChanges torepository dryRun YesUpdateWorking compression
+      finalizeRepositoryChanges torepository dryRun YesUpdateWorking compression patchIndex
       when withWorkingDir $ do
         debugMessage "Writing working directory contents..."
         createPristineDirectoryTree torepository compression "."
@@ -409,11 +411,11 @@ copyPackedRepository ::
   -> GetKind -> Compression
   -> DryRun
   -> UMask -> RemoteDarcs
-  -> Bool -> IO ()
-copyPackedRepository r verb useCache getKind compr dryRun umask rdarcs withWorkingDir =
+  -> Bool -> Bool -> IO ()
+copyPackedRepository r verb useCache getKind compr dryRun umask rdarcs withWorkingDir patchIndex =
   -- fallback to no-packs get in case of error
-  copyPackedRepository2 r verb useCache getKind compr dryRun withWorkingDir
-      `catchall` copyNotPackedRepository r verb useCache getKind compr dryRun umask rdarcs withWorkingDir
+  copyPackedRepository2 r verb useCache getKind compr dryRun withWorkingDir patchIndex
+      `catchall` copyNotPackedRepository r verb useCache getKind compr dryRun umask rdarcs withWorkingDir patchIndex
 
 copyPackedRepository2 ::
   forall p wR wU wT. (RepoPatch p, ApplyState (PrimOf p) ~ Tree, ApplyState p ~ Tree)
@@ -421,8 +423,8 @@ copyPackedRepository2 ::
   -> Verbosity -> UseCache
   -> GetKind -> Compression
   -> DryRun
-  -> Bool -> IO ()
-copyPackedRepository2 fromRepo@(Repo fromDir _ (DarcsRepository _ fromCache)) verb useCache getKind compression dryRun withWorkingDir = do
+  -> Bool -> Bool -> IO ()
+copyPackedRepository2 fromRepo@(Repo fromDir _ (DarcsRepository _ fromCache)) verb useCache getKind compression dryRun withWorkingDir patchIndex = do
   b <- fetchFileLazyPS (fromDir ++ "/" ++ darcsdir ++ "/packs/basic.tar.gz") Uncachable
   when (verb == Verbose) $ putDocLn $ text "Getting packed repository."
   Repo toDir toFormat (DarcsRepository toPristine toCache) <-
@@ -450,7 +452,7 @@ copyPackedRepository2 fromRepo@(Repo fromDir _ (DarcsRepository _ fromCache)) ve
   Sealed pw <- tentativelyMergePatches toRepo "get" NoAllowConflicts YesUpdateWorking NoExternalMerge useCache NoWantGuiPause compression verb ( UseIndex, ScanKnown ) us' them'
   invalidateIndex toRepo
   withGutsOf toRepo $ do
-    finalizeRepositoryChanges toRepo dryRun YesUpdateWorking compression
+    finalizeRepositoryChanges toRepo dryRun YesUpdateWorking compression patchIndex
     when withWorkingDir $
       applyToWorking toRepo verb pw >> return ()
     return ()
