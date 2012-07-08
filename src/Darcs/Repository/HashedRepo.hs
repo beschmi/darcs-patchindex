@@ -100,10 +100,11 @@ import Darcs.Repository.HashedIO ( copyHashed, copyPartialsHashed,
 import Darcs.Repository.InternalTypes ( Repository(..), extractCache,
                                         modifyCache )
 import Darcs.Utils ( withCurrentDirectory )
-import Darcs.Witnesses.Ordered ( reverseRL, reverseFL, (+<+), FL(..), RL(..),
-                                 (:>)(..), mapRL, mapFL )
-import Darcs.Witnesses.Sealed ( Sealed(..), seal, unseal, mapSeal )
-import Darcs.Witnesses.Unsafe ( unsafeCoerceP )
+import Darcs.Patch.Witnesses.Ordered
+    ( reverseRL, reverseFL, (+<+), FL(..), RL(..),
+    (:>)(..), mapRL, mapFL )
+import Darcs.Patch.Witnesses.Sealed ( Sealed(..), seal, unseal, mapSeal )
+import Darcs.Patch.Witnesses.Unsafe ( unsafeCoerceP )
 
 import ByteStringUtils ( gzReadFilePS, dropSpace )
 import Crypt.SHA256 ( sha256sum )

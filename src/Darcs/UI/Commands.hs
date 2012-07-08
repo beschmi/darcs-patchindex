@@ -67,7 +67,7 @@ import Darcs.Patch.Apply( ApplyState )
 import qualified Darcs.Patch ( summary )
 #endif
 
-import Darcs.Witnesses.Ordered ( FL, mapFL )
+import Darcs.Patch.Witnesses.Ordered ( FL, mapFL )
 import Darcs.UI.Arguments
     ( DarcsFlag( All
                , Summary

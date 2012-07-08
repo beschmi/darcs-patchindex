@@ -38,14 +38,15 @@ import Darcs.Patch.Apply( ApplyState )
 import Darcs.Patch.Conflict ( Conflict, CommuteNoConflicts )
 import Darcs.Patch.Prim ( PrimPatchBase )
 import Darcs.Path ( toFilePath )
-import Darcs.Witnesses.Ordered ( FL(..), RL(..), (:>)(..), (+>+),
-                             mapFL_FL, concatFL, reverseRL )
+import Darcs.Patch.Witnesses.Ordered
+    ( FL(..), RL(..), (:>)(..), (+>+),
+    mapFL_FL, concatFL, reverseRL )
+import Darcs.Patch.Witnesses.Sealed ( Sealed(..), unFreeLeft )
 
 import CommandLine ( parseCmd )
 import Darcs.Patch.PatchInfoAnd ( hopefully )
 import Darcs.Utils ( askEnter, filterFilePaths )
 import Darcs.Patch.Set ( PatchSet(..), Origin )
-import Darcs.Witnesses.Sealed ( Sealed(..), unFreeLeft )
 import Darcs.Repository.Prefs ( filetypeFunction )
 import Exec ( exec, Redirect(..) )
 import Darcs.Repository.Lock ( withTempDir )

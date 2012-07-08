@@ -185,26 +185,33 @@ import qualified Darcs.Repository.Old as Old
                             )
 import Darcs.Repository.Flags
     ( Compression, Verbosity(..), UseCache(..), UpdateWorking (..), DryRun(..), UMask (..), AllowConflicts (..), ExternalMerge (..), WorkRepo (..)  )
-import Darcs.Witnesses.Eq ( EqCheck(..) )
-import Darcs.Witnesses.Unsafe ( unsafeCoerceP
-                              , unsafeCoercePStart
-                              )
-import Darcs.Witnesses.Ordered ( FL(..)
-                               , RL(..)
-                               , (:\/:)(..)
-                               , (:/\:)(..)
-                               , (:>)(..)
-                               , (+>+)
-                               , (+<+)
-                               , lengthFL
-                               , allFL
-                               , filterFLFL
-                               , reverseFL
-                               , mapFL_FL
-                               , concatFL
-                               , reverseRL
-                               , mapRL
-                               )
+import Darcs.Patch.Witnesses.Eq ( EqCheck(..) )
+import Darcs.Patch.Witnesses.Unsafe
+    ( unsafeCoerceP, unsafeCoercePStart )
+import Darcs.Patch.Witnesses.Ordered
+    ( FL(..)
+    , RL(..)
+    , (:\/:)(..)
+    , (:/\:)(..)
+    , (:>)(..)
+    , (+>+)
+    , (+<+)
+    , lengthFL
+    , allFL
+    , filterFLFL
+    , reverseFL
+    , mapFL_FL
+    , concatFL
+    , reverseRL
+    , mapRL
+    )
+import Darcs.Patch.Witnesses.Sealed
+    ( Sealed(Sealed)
+    , seal
+    , FlippedSeal(FlippedSeal)
+    , flipSeal
+    , mapSeal
+    )
 import Darcs.Patch ( RepoPatch
                    , Patchy
                    , merge
@@ -259,12 +266,6 @@ import Darcs.Repository.Lock
     , writeDocBinFile
     , removeFileMayNotExist
     )
-import Darcs.Witnesses.Sealed ( Sealed(Sealed)
-                              , seal
-                              , FlippedSeal(FlippedSeal)
-                              , flipSeal
-                              , mapSeal
-                              )
 import Darcs.Repository.InternalTypes( Repository(..)
                                      , RepoType(..)
                                      , Pristine(..)
@@ -275,8 +276,6 @@ import System.Mem( performGC )
 
 import qualified Storage.Hashed.Tree as Tree
 import Storage.Hashed.Tree ( Tree )
-import Darcs.Repository.FileMod ( createOrUpdatePatchIndexDisk )
-import Darcs.Repository.Read ( readRepo )
 
 #include "impossible.h"
 
@@ -468,6 +467,17 @@ siftForPending simple_ps =
                       Left _ -> sfp (p:>:sofar) ps
             sfp sofar (p:<:ps) = sfp (p:>:sofar) ps
 
+-- @todo: we should not have to open the result of HashedRepo and
+-- seal it.  Instead, update this function to work with type witnesses
+-- by fixing DarcsRepo to match HashedRepo in the handling of
+-- Repository state.
+readRepo :: (RepoPatch p, ApplyState p ~ Tree)
+         => Repository p wR wU wT
+         -> IO (PatchSet p Origin wR)
+readRepo repo@(Repo r rf _)
+    | formatHas HashedInventory rf = HashedRepo.readRepo repo r
+    | otherwise = do Sealed ps <- Old.readOldRepo r
+                     return $ unsafeCoerceP ps
 
 readTentativeRepo :: (RepoPatch p, ApplyState p ~ Tree)
                   => Repository p wR wU wT
@@ -777,7 +787,6 @@ finalizeRepositoryChanges repository@(Repo dir rf _) _ updateWorking compr
                  HashedRepo.finalizeTentativeChanges repository compr
                  finalizePending repository updateWorking
             debugMessage "Done finalizing changes..."
-            createOrUpdatePatchIndexDisk repository
     | otherwise = fail Old.oldRepoFailMsg
 
 revertRepositoryChanges :: RepoPatch p

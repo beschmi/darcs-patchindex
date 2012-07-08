@@ -10,8 +10,8 @@ import Darcs.Patch.ReadMonads ( ParserM, choice, string,
 import Darcs.Patch.V1.Core ( Patch(..) )
 import Darcs.Patch.V1.Commute ( merger )
 
-import Darcs.Witnesses.Sealed ( Sealed(..), seal, mapSeal )
-import Darcs.Witnesses.Unsafe ( unsafeCoerceP )
+import Darcs.Patch.Witnesses.Sealed ( Sealed(..), seal, mapSeal )
+import Darcs.Patch.Witnesses.Unsafe ( unsafeCoerceP )
 
 import Control.Monad ( liftM )
 import qualified Data.ByteString.Char8 as BC ( unpack, pack )

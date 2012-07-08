@@ -33,13 +33,10 @@ module Darcs.Patch.Apply
     , applyToFilePaths
     , applyToTree
     , applyToState
-    , applyToFileMods
     , effectOnFilePaths
     ) where
 
 import Prelude hiding ( catch, pi )
-
-import Data.Set ( Set )
 
 import Control.Applicative ( (<$>) )
 import Control.Arrow ( (***) )
@@ -48,10 +45,8 @@ import Storage.Hashed.Tree( Tree )
 import Storage.Hashed.Monad( virtualTreeMonad )
 
 import Darcs.Patch.ApplyMonad ( ApplyMonad(..), withFileNames, ApplyMonadTrans(..) )
-import Darcs.Path( fn2fp, fp2fn, FileName )
-import Darcs.Witnesses.Ordered ( FL(..), RL(..) )
-import Darcs.FileModMonad ( withPatchMods )
-import Darcs.Repository.FileModTypes ( PatchMod )
+import Darcs.Path( fn2fp, fp2fn )
+import Darcs.Patch.Witnesses.Ordered ( FL(..), RL(..) )
 
 
 class Apply p where
@@ -102,9 +97,3 @@ applyToState :: forall p m wX wY. (Apply p, ApplyMonadTrans m (ApplyState p))
              -> (ApplyState p) m
              -> m ((ApplyState p) m)
 applyToState patch t = snd <$> runApplyMonad (apply patch) t
-
-
---------------------------------------------------------------------------------
--- | Apply a patch to set of 'FileName's, yielding the new set of 'FileName's and 'PatchMod's
-applyToFileMods :: (Apply p, ApplyState p ~ Tree) => p wX wY -> (Set FileName) -> (Set FileName, [PatchMod FileName])
-applyToFileMods patch fns = withPatchMods (apply patch) fns

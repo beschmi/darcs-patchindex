@@ -10,7 +10,7 @@ import System.IO.Unsafe ( unsafePerformIO )
 
 import Darcs.Patch.Info ( justName, isTag )
 import Darcs.Patch.PatchInfoAnd ( PatchInfoAnd, info )
-import Darcs.Witnesses.Ordered ( FL(..), RL(..), lengthRL, lengthFL )
+import Darcs.Patch.Witnesses.Ordered ( FL(..), RL(..), lengthRL, lengthFL )
 
 import Progress ( minlist, beginTedious, endTedious, progress,
                   progressKeepLatest, tediousSize, finishedOne )

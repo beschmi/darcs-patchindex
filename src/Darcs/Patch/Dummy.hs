@@ -18,7 +18,7 @@ import Darcs.Patch.Merge ( Merge)
 import Darcs.Patch.Repair ( Check, RepairToFL )
 import Darcs.Patch.RepoPatch ( RepoPatch )
 import Darcs.Patch.Show ( ShowPatchBasic )
-import Darcs.Witnesses.Eq ( MyEq )
+import Darcs.Patch.Witnesses.Eq ( MyEq )
 import Storage.Hashed.Tree( Tree )
 
 

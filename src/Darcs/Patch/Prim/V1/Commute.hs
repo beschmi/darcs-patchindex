@@ -12,8 +12,8 @@ import qualified Data.ByteString as B (ByteString, concat)
 import qualified Data.ByteString.Char8 as BC (pack)
 
 import Darcs.Path ( FileName, fn2fp, movedirfilename )
-import Darcs.Witnesses.Ordered ( (:<)(..) )
-import Darcs.Witnesses.Unsafe ( unsafeCoerceP )
+import Darcs.Patch.Witnesses.Ordered ( (:<)(..) )
+import Darcs.Patch.Witnesses.Unsafe ( unsafeCoerceP )
 import Darcs.Patch.Prim.V1.Core
      ( Prim(..), FilePatchType(..) )
 import Darcs.Patch.Invert ( Invert(..) )

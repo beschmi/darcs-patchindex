@@ -49,9 +49,11 @@ import Darcs.Repository ( Repository, withRepoLock, RepoJob(..), withRepositoryD
 import Darcs.Global ( darcsdir )
 import Darcs.Patch ( Named, showPatch, patch2patchinfo, fromPrim, fromPrims,
                      infopatch, adddeps, getdeps, effect, patchcontents )
-import Darcs.Witnesses.Eq ( EqCheck(..), (=/\=) )
-import Darcs.Witnesses.Ordered ( FL(..), RL(..), bunchFL, mapFL, mapFL_FL,
-                                 concatFL, mapRL )
+import Darcs.Patch.Witnesses.Eq ( EqCheck(..), (=/\=) )
+import Darcs.Patch.Witnesses.Ordered
+    ( FL(..), RL(..), bunchFL, mapFL, mapFL_FL,
+    concatFL, mapRL )
+import Darcs.Patch.Witnesses.Sealed ( FlippedSeal(..), Sealed(..) )
 import Darcs.Patch.Info ( piRename, piTag, isTag, PatchInfo )
 import Darcs.Patch.V1 ( Patch )
 import Darcs.Patch.V2 ( RealPatch )
@@ -66,7 +68,6 @@ import Darcs.Repository.Motd ( showMotd )
 import Darcs.UI.External ( catchall )
 import Darcs.Utils ( clarifyErrors, askUser )
 import Darcs.Patch.Progress ( progressFL )
-import Darcs.Witnesses.Sealed ( FlippedSeal(..), Sealed(..) )
 import Printer ( text, ($$) )
 import Darcs.ColorPrinter ( traceDoc )
 import Darcs.Repository.Lock ( writeBinFile )

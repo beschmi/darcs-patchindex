@@ -2,7 +2,7 @@ module Darcs.Patch.Effect ( Effect(..) ) where
 
 import Darcs.Patch.Prim.Class ( PrimOf )
 
-import Darcs.Witnesses.Ordered
+import Darcs.Patch.Witnesses.Ordered
     ( FL(..), RL(..), reverseFL, reverseRL
     , concatFL, concatRL, mapFL_FL, mapRL_RL
     )

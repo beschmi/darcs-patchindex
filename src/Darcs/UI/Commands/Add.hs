@@ -76,8 +76,8 @@ import Darcs.Repository
     )
 import Darcs.Repository.Prefs ( darcsdirFilter, boringFileFilter )
 import Darcs.Utils ( treeHas, treeHasDir, treeHasAnycase, getFileStatus, withCurrentDirectory, nubsort )
-import Darcs.Witnesses.Ordered ( FL(..), (+>+), nullFL )
-import Darcs.Witnesses.Sealed ( Sealed(..), Gap(..), FreeLeft, unFreeLeft )
+import Darcs.Patch.Witnesses.Ordered ( FL(..), (+>+), nullFL )
+import Darcs.Patch.Witnesses.Sealed ( Sealed(..), Gap(..), FreeLeft, unFreeLeft )
 
 
 addDescription :: String

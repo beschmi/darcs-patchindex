@@ -6,7 +6,7 @@ import Darcs.Patch.Prim ( showPrim, PrimPatch )
 
 import Darcs.Patch.V1.Core ( Patch(..) )
 
-import Darcs.Witnesses.Show ( Show1(..), Show2(..), ShowDict(..) )
+import Darcs.Patch.Witnesses.Show ( Show1(..), Show2(..), ShowDict(..) )
 
 import Printer ( Doc, renderString,
                  text, blueText,

@@ -17,8 +17,8 @@ import Darcs.Patch.TokenReplace ( tryTokInternal )
 import Darcs.Patch.ApplyMonad ( ApplyMonad(..) )
 import Storage.Hashed.Tree( Tree )
 
-import Darcs.Witnesses.Ordered ( FL(..), mapFL_FL, spanFL, (:>)(..) )
-import Darcs.Witnesses.Unsafe ( unsafeCoercePStart )
+import Darcs.Patch.Witnesses.Ordered ( FL(..), mapFL_FL, spanFL, (:>)(..) )
+import Darcs.Patch.Witnesses.Unsafe ( unsafeCoercePStart )
 
 import ByteStringUtils ( unlinesPS, breakAfterNthNewline, breakBeforeNthNewline, )
 import Printer( renderString )

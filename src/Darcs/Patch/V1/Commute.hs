@@ -49,22 +49,22 @@ import Darcs.Patch.Permutations ( headPermutationsRL, simpleHeadPermutationsFL )
 import Printer ( text, vcat, ($$) )
 import Darcs.Patch.V1.Show ( showPatch_ )
 import Data.List ( nub, nubBy )
-import Darcs.Witnesses.Sealed ( unsafeUnseal, unsafeUnsealFlipped )
 import Darcs.Utils ( nubsort )
 #include "impossible.h"
-import Darcs.Witnesses.Sealed ( Sealed(..), mapSeal, unseal, FlippedSeal(..), mapFlipped )
-import Darcs.Witnesses.Eq ( EqCheck(..), MyEq(..) )
-import Darcs.Witnesses.Unsafe ( unsafeCoerceP, unsafeCoercePStart
-                              , unsafeCoercePEnd )
-import Darcs.Witnesses.Ordered ( mapFL_FL,
-                             FL(..), RL(..),
-                             (:/\:)(..), (:<)(..), (:\/:)(..), (:>)(..),
-                             lengthFL, mapRL,
-                             reverseFL, reverseRL, concatFL
-                           )
-
---import Darcs.ColorPrinter ( traceDoc )
---import Printer ( greenText )
+import Darcs.Patch.Witnesses.Sealed
+    ( Sealed(..) , mapSeal, unseal, FlippedSeal(..), mapFlipped
+    , unsafeUnseal, unsafeUnsealFlipped )
+import Darcs.Patch.Witnesses.Eq ( EqCheck(..), MyEq(..) )
+import Darcs.Patch.Witnesses.Unsafe
+    ( unsafeCoerceP, unsafeCoercePStart
+    , unsafeCoercePEnd )
+import Darcs.Patch.Witnesses.Ordered
+    ( mapFL_FL,
+    FL(..), RL(..),
+    (:/\:)(..), (:<)(..), (:\/:)(..), (:>)(..),
+    lengthFL, mapRL,
+    reverseFL, reverseRL, concatFL
+    )
 
 data Perhaps a = Unknown | Failed | Succeeded a
 

@@ -64,14 +64,16 @@ import Darcs.Patch.V2.Non ( Non(..), Nonable(..), unNon, showNons, showNon
                           , commuteOrRemFromCtx, commuteOrRemFromCtxFL
                           , remNons, (*>), (>*), (*>>), (>>*) )
 import Darcs.Utils ( nubsort )
-import Darcs.Witnesses.Unsafe ( unsafeCoerceP )
-import Darcs.Witnesses.Eq ( MyEq(..), EqCheck(..) )
-import Darcs.Witnesses.Ordered ( FL(..), RL(..), (:>)(..), (+>+), (+<+)
-                               , mapFL_FL, reverseFL, (:\/:)(..), (:/\:)(..)
-                               , reverseRL, lengthFL, lengthRL, nullFL )
-import Darcs.Witnesses.Sealed ( FlippedSeal(..), Sealed(Sealed), mapSeal
-                              , unseal )
-import Darcs.Witnesses.Show ( Show2(..), ShowDict(..) )
+import Darcs.Patch.Witnesses.Unsafe ( unsafeCoerceP )
+import Darcs.Patch.Witnesses.Eq ( MyEq(..), EqCheck(..) )
+import Darcs.Patch.Witnesses.Ordered
+    ( FL(..), RL(..), (:>)(..), (+>+), (+<+)
+    , mapFL_FL, reverseFL, (:\/:)(..), (:/\:)(..)
+    , reverseRL, lengthFL, lengthRL, nullFL )
+import Darcs.Patch.Witnesses.Sealed
+    ( FlippedSeal(..), Sealed(Sealed), mapSeal
+    , unseal )
+import Darcs.Patch.Witnesses.Show ( Show2(..), ShowDict(..) )
 
 import Printer ( Doc, renderString, blueText, redText, (<+>), ($$) )
 

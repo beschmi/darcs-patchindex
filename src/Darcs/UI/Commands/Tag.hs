@@ -31,7 +31,7 @@ import Darcs.Repository ( withRepoLock, Repository, RepoJob(..), readRepo,
 import Darcs.Patch ( infopatch, adddeps, Patchy, PrimPatch, PrimOf )
 import Darcs.Patch.Info ( patchinfo )
 import Darcs.Patch.Depends ( getUncovered )
-import Darcs.Witnesses.Ordered ( FL(..) )
+import Darcs.Patch.Witnesses.Ordered ( FL(..) )
 import Darcs.Repository.Lock ( worldReadableTemp )
 import Darcs.UI.Flags ( DarcsFlag(..), compression, verbosity, dryRun, useCache, umask )
 import Darcs.Repository.Flags ( UpdateWorking(..) )

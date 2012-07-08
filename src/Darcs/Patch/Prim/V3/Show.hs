@@ -16,7 +16,7 @@ import Darcs.Patch.Summary ( plainSummaryPrim, plainSummaryPrims )
 import Darcs.Patch.Prim.Class ( PrimShow(..) )
 import Darcs.Patch.Prim.V3.Core ( Prim(..), Hunk(..), UUID(..) )
 import Darcs.Patch.Prim.V3.Details ()
-import Darcs.Witnesses.Show ( Show1(..), Show2(..), ShowDict(..) )
+import Darcs.Patch.Witnesses.Show ( Show1(..), Show2(..), ShowDict(..) )
 import Printer ( renderString, text, packedString, blueText, (<+>), (<>), Doc )
 
 #include "impossible.h"

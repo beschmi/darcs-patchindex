@@ -51,10 +51,11 @@ import Darcs.Patch.PatchInfoAnd ( PatchInfoAnd, piap, fmapFL_PIAP, info,
 import Darcs.Patch.ReadMonads ( parseStrictly )
 import Darcs.Patch.Set ( PatchSet(..), Tagged(..), SealedPatchSet, Origin )
 import Darcs.Patch.Show ( ShowPatchBasic )
-import Darcs.Witnesses.Ordered ( RL(..), FL(..), (:>)(..), reverseFL, (+<+),
-                                 mapFL, mapFL_FL, mapRL )
-import Darcs.Witnesses.Sealed ( Sealed(Sealed) )
-import Darcs.Witnesses.Unsafe ( unsafeCoerceP )
+import Darcs.Patch.Witnesses.Ordered
+    ( RL(..), FL(..), (:>)(..), reverseFL, (+<+),
+    mapFL, mapFL_FL, mapRL )
+import Darcs.Patch.Witnesses.Sealed ( Sealed(Sealed) )
+import Darcs.Patch.Witnesses.Unsafe ( unsafeCoerceP )
 
 import ByteStringUtils ( linesPS, unlinesPS, dropSpace, substrPS)
 import Printer ( Doc, renderPS, newline, text, ($$),

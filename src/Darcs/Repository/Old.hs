@@ -36,7 +36,8 @@ import qualified Data.ByteString.Char8 as BC (break, pack)
 import Darcs.Patch ( RepoPatch, Named,
                      readPatch )
 
-import Darcs.Witnesses.Ordered ( RL(..) )
+import Darcs.Patch.Witnesses.Ordered ( RL(..) )
+import Darcs.Patch.Witnesses.Sealed ( Sealed(Sealed), seal, unseal, mapSeal )
 import Darcs.Patch.Info ( PatchInfo, makeFilename, readPatchInfos )
 import Darcs.Patch.Set ( PatchSet(..), Tagged(..), SealedPatchSet, Origin )
 import Darcs.Repository.External
@@ -46,7 +47,6 @@ import Darcs.Repository.External
     )
 import Darcs.Repository.Lock ( writeBinFile )
 import Darcs.Global ( darcsdir )
-import Darcs.Witnesses.Sealed ( Sealed(Sealed), seal, unseal, mapSeal )
 
 #include "impossible.h"
 

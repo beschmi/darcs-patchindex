@@ -3,7 +3,7 @@ module Darcs.Patch.Inspect
        )
        where
 
-import Darcs.Witnesses.Ordered ( FL, RL, reverseRL, mapFL )
+import Darcs.Patch.Witnesses.Ordered ( FL, RL, reverseRL, mapFL )
 
 import qualified Data.ByteString.Char8 as BC
 import Data.List ( nub )

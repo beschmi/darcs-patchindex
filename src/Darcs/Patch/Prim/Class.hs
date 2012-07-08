@@ -20,10 +20,10 @@ import Darcs.Patch.ReadMonads ( ParserM )
 import Darcs.Patch.Repair ( RepairToFL )
 import Darcs.Patch.Show ( ShowPatch )
 import Darcs.Patch.SummaryData ( SummDetail )
-import Darcs.Witnesses.Eq ( MyEq(..) )
-import Darcs.Witnesses.Ordered
+import Darcs.Patch.Witnesses.Eq ( MyEq(..) )
+import Darcs.Patch.Witnesses.Ordered
     ( FL(..), RL, (:>), mapFL, mapFL_FL, reverseFL )
-import Darcs.Witnesses.Sealed ( Sealed )
+import Darcs.Patch.Witnesses.Sealed ( Sealed )
 
 import Printer ( Doc, vcat )
 

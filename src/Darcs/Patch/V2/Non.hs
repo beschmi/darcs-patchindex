@@ -53,16 +53,18 @@ import Darcs.Patch.Prim ( FromPrim(..), ToFromPrim(..),
 import Darcs.Patch.Patchy ( Patchy, showPatch, ReadPatch(..),
                             Commute(..), invert )
 import Darcs.Patch.ReadMonads ( ParserM, lexChar )
-import Darcs.Witnesses.Eq ( MyEq(..), EqCheck(..) )
-import Darcs.Witnesses.Ordered ( FL(..), RL(..), (+>+), mapRL_RL
-                               , (:>)(..), reverseFL, reverseRL )
+import Darcs.Patch.Witnesses.Eq ( MyEq(..), EqCheck(..) )
+import Darcs.Patch.Witnesses.Ordered
+    ( FL(..), RL(..), (+>+), mapRL_RL
+    , (:>)(..), reverseFL, reverseRL )
+import Darcs.Patch.Witnesses.Show
+    ( ShowDict(..), Show1(..), Show2(..), appPrec
+    , showsPrec2 )
+import Darcs.Patch.Witnesses.Sealed ( Sealed(Sealed) )
 import Darcs.Patch.Read ( peekfor )
 import Darcs.Patch.Show ( ShowPatchBasic )
 import Darcs.Patch.Viewing ()
 import Darcs.Patch.Permutations ( removeFL, commuteWhatWeCanFL )
-import Darcs.Witnesses.Show ( ShowDict(..), Show1(..), Show2(..), appPrec
-                            , showsPrec2 )
-import Darcs.Witnesses.Sealed ( Sealed(Sealed) )
 import Printer ( Doc, empty, vcat, hiddenPrefix, blueText, ($$) )
 import qualified Data.ByteString.Char8 as BC ( pack, singleton )
 

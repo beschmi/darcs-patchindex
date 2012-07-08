@@ -1,6 +1,6 @@
 module Darcs.Patch.Debug ( PatchDebug(..) )where
 
-import Darcs.Witnesses.Ordered ( FL, RL )
+import Darcs.Patch.Witnesses.Ordered ( FL, RL )
 
 -- | PatchDebug is a hook class for temporarily adding debug information.
 -- To use it, add any methods that are required, implement those methods

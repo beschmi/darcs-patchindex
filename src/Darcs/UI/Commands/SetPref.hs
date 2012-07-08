@@ -29,7 +29,7 @@ import Darcs.UI.Flags ( useCache, dryRun, umask)
 import Darcs.Repository.Flags ( UpdateWorking (..) )
 import Darcs.Repository ( addToPending, withRepoLock, RepoJob(..) )
 import Darcs.Patch ( changepref )
-import Darcs.Witnesses.Ordered ( FL(..) )
+import Darcs.Patch.Witnesses.Ordered ( FL(..) )
 import Darcs.Repository.Prefs ( getPrefval, changePrefval, )
 import English ( orClauses )
 #include "impossible.h"

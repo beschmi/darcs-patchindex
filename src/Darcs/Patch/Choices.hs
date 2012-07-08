@@ -70,13 +70,14 @@ import Darcs.Patch
 import Darcs.Patch.Merge ( Merge )
 import Darcs.Patch.Permutations ( commuteWhatWeCanRL, commuteWhatWeCanFL )
 import Darcs.Patch.Patchy ( Invert, Commute, PatchInspect )
-import Darcs.Witnesses.Eq ( MyEq(..), EqCheck(..) )
-import Darcs.Witnesses.Unsafe ( unsafeCoerceP )
-import Darcs.Witnesses.Ordered ( FL(..), RL(..),
-                             (:>)(..), (:\/:)(..), (:/\:)(..), (:||:)(..),
-                             zipWithFL, mapFL_FL, concatFL,
-                             (+>+), reverseRL, anyFL )
-import Darcs.Witnesses.Sealed ( Sealed2(..) )
+import Darcs.Patch.Witnesses.Eq ( MyEq(..), EqCheck(..) )
+import Darcs.Patch.Witnesses.Unsafe ( unsafeCoerceP )
+import Darcs.Patch.Witnesses.Ordered
+    ( FL(..), RL(..),
+    (:>)(..), (:\/:)(..), (:/\:)(..), (:||:)(..),
+    zipWithFL, mapFL_FL, concatFL,
+    (+>+), reverseRL, anyFL )
+import Darcs.Patch.Witnesses.Sealed ( Sealed2(..) )
 
 
 #include "impossible.h"

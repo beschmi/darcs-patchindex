@@ -84,7 +84,8 @@ import Darcs.Patch ( RepoPatch
                    , PrimOf
                    )
 import Darcs.Patch.Apply( ApplyState )
-import Darcs.Witnesses.Ordered ( lengthFL, mapFL_FL, (:>)(..) )
+import Darcs.Patch.Witnesses.Ordered ( lengthFL, mapFL_FL, (:>)(..) )
+import Darcs.Patch.Witnesses.Sealed ( Sealed(..) )
 import Darcs.Patch.PatchInfoAnd ( hopefully )
 import Darcs.Patch.Depends ( findCommonWithThem, countUsThem )
 import Darcs.Repository.Prefs ( setDefaultrepo )
@@ -94,9 +95,7 @@ import Darcs.Repository.Match ( getOnePatchset )
 import Progress ( debugMessage )
 import Printer ( text, errorDoc, ($$) )
 import Darcs.Path ( toFilePath, toPath, ioAbsoluteOrRemote)
-import Darcs.Witnesses.Sealed ( Sealed(..) )
 import English ( englishNum, Noun(..) )
-import Darcs.Repository.FileMod( updatePatchIndexDisk )
 
 getDescription :: String
 getDescription = "Create a local copy of a repository."
@@ -182,7 +181,6 @@ getCmd opts [inrepodir] = do
       patchSetToRepository fromrepo patches_to_get (useCache opts) (compression opts) (remoteDarcs opts)
       debugMessage "Finished converting selected patch set to new repository"
     else copyRepoAndGoToChosenVersion opts repodir rfsource
-  withRepository (useCache []) $ RepoJob $ updatePatchIndexDisk 
 getCmd _ _ = fail "You must provide 'get' with either one or two arguments."
 
 -- | called by getCmd

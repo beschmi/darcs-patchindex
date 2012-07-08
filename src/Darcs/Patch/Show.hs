@@ -29,7 +29,7 @@ import Prelude hiding ( pi )
 import Darcs.Path ( FileName, fn2ps, encodeWhite, fn2fp )
 import Darcs.Patch.Format ( FileNameFormat(..) )
 import Darcs.Patch.Info ( PatchInfo, showPatchInfo )
-import Darcs.Witnesses.Ordered ( FL )
+import Darcs.Patch.Witnesses.Ordered ( FL )
 
 import English ( plural, Noun(Noun) )
 import Printer ( Doc, vcat, blueText, ($$), text, packedString )

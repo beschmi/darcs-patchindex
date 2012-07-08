@@ -4,7 +4,7 @@ module Darcs.Patch.Bracketed.Instances () where
 import Darcs.Patch.Bracketed ( Bracketed(..) )
 import Darcs.Patch.Show ( ShowPatchBasic(..) )
 
-import Darcs.Witnesses.Ordered ( FL(NilFL), mapFL )
+import Darcs.Patch.Witnesses.Ordered ( FL(NilFL), mapFL )
 
 import Printer ( vcat, blueText, ($$) )
 

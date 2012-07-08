@@ -26,8 +26,8 @@ module Darcs.UI.CommandsAux
 
 import Darcs.UI.Flags ( DarcsFlag( RestrictPaths, DontRestrictPaths ) )
 import Darcs.Patch.Inspect ( PatchInspect, listTouchedFiles )
-import Darcs.Witnesses.Ordered ( FL, mapFL )
-import Darcs.Witnesses.Sealed ( Sealed2(..), unseal2 )
+import Darcs.Patch.Witnesses.Ordered ( FL, mapFL )
+import Darcs.Patch.Witnesses.Sealed ( Sealed2(..), unseal2 )
 import Darcs.Path ( isMaliciousPath )
 
 -- * File paths

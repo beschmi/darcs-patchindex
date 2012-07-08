@@ -34,10 +34,11 @@ import Data.Maybe ( mapMaybe )
 import Darcs.Patch.Commute ( Commute, commute, commuteFLorComplain, commuteRL )
 import Darcs.Patch.CommuteFn ( CommuteFn )
 import Darcs.Patch.Invert ( Invert(..) )
-import Darcs.Witnesses.Eq ( MyEq(..), EqCheck(..) )
-import Darcs.Witnesses.Ordered ( FL(..), RL(..), (:>)(..), (+<+)
-                               , reverseFL, (+>+), (:\/:)(..), lengthFL
-                               , lengthRL, reverseRL )
+import Darcs.Patch.Witnesses.Eq ( MyEq(..), EqCheck(..) )
+import Darcs.Patch.Witnesses.Ordered
+    ( FL(..), RL(..), (:>)(..), (+<+)
+    , reverseFL, (+>+), (:\/:)(..), lengthFL
+    , lengthRL, reverseRL )
 #include "impossible.h"
 
 -- |split an 'FL' into "left" and "right" lists according to a predicate @p@, using commutation as necessary.

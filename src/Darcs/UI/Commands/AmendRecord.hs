@@ -112,7 +112,7 @@ import Darcs.UI.SelectChanges
     , withSelectedPatchFromRepo
     )
 import Darcs.Utils ( askUser, clarifyErrors, PromptConfig(..), promptChar )
-import Darcs.Witnesses.Ordered ( FL(..), (:>)(..), (+>+), nullFL, reverseRL )
+import Darcs.Patch.Witnesses.Ordered ( FL(..), (:>)(..), (+>+), nullFL, reverseRL )
 
 import Printer ( putDocLn )
 import Storage.Hashed.Tree( Tree )

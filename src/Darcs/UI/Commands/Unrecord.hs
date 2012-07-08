@@ -71,9 +71,11 @@ import Darcs.Repository ( PatchInfoAnd, withGutsOf,
 import Darcs.Patch ( RepoPatch, invert, commute, effect )
 import Darcs.Patch.Apply( ApplyState )
 import Darcs.Patch.Set ( PatchSet(..), Tagged(..), appendPSFL, Origin )
-import Darcs.Witnesses.Ordered ( RL(..), (:>)(..), (+<+),
-                             mapFL_FL, nullFL,
-                             reverseRL, mapRL, FL(..) )
+import Darcs.Patch.Witnesses.Sealed ( Sealed(..) )
+import Darcs.Patch.Witnesses.Ordered
+    ( RL(..), (:>)(..), (+<+),
+    mapFL_FL, nullFL,
+    reverseRL, mapRL, FL(..) )
 import Darcs.Patch.Depends ( findCommonWithThem )
 import Darcs.UI.SelectChanges
     ( selectChanges
@@ -83,7 +85,6 @@ import Darcs.UI.SelectChanges
     )
 import Darcs.Patch.Bundle ( makeBundleN, patchFilename, contextPatches )
 import Progress ( debugMessage )
-import Darcs.Witnesses.Sealed ( Sealed(..) )
 import Darcs.Path( useAbsoluteOrStd )
 import Darcs.Repository.Lock( writeDocBinFile )
 import Storage.Hashed.Tree( Tree )

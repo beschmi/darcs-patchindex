@@ -153,9 +153,7 @@ module Darcs.UI.Arguments
     , optimizeHTTP
     , getOutput
     , usePacks
-    , recordRollback
     , amendUnrecord
-    , patchIndex
     ) where
 
 import System.Console.GetOpt
@@ -393,13 +391,10 @@ getContent Repair = NoContent
 getContent JustThisRepo = NoContent
 getContent OptimizePristine = NoContent
 getContent OptimizeHTTP = NoContent
-getContent RecordRollback = NoContent
-getContent NoRecordRollback = NoContent
 getContent AmendUnrecord = NoContent
 getContent NoAmendUnrecord = NoContent
 getContent UseWorkingDir = NoContent
 getContent UseNoWorkingDir = NoContent
-getContent PatchIndexFlag = NoContent
 
 getContentString :: DarcsFlag -> Maybe String
 getContentString f =
@@ -616,11 +611,6 @@ fixSubPaths :: [DarcsFlag] -> [FilePath] -> IO [SubPath]
 fixSubPaths flags fs = nub . catMaybes <$> (maybeFixSubPaths flags $
   filter (not . null) fs)
 
-patchIndex :: DarcsOption
-patchIndex = DarcsSingleOption $
-  DarcsNoArgOption [] ["patch-index"] PatchIndexFlag
-  "create, maintain, and use patch index"
-
 -- | 'listOptions' is an option which lists the command's arguments
 listOptions :: DarcsOption
 listOptions = DarcsSingleOption $ DarcsNoArgOption [] ["list-options"] ListOptions
@@ -651,7 +641,7 @@ pipeInteractive, allPipeInteractive, allInteractive,
   author, askdeps, lookforadds, ignoretimes, test, notest, help, forceReplace,
   allowUnrelatedRepos,
   matchOne, matchRange, matchSeveral, sendmailCmd,
-  logfile, rmlogfile, leaveTestDir, fromOpt,  recordRollback, amendUnrecord
+  logfile, rmlogfile, leaveTestDir, fromOpt,  amendUnrecord
       :: DarcsOption
 
 sign, applyas, verify :: DarcsOption
@@ -813,12 +803,6 @@ leaveTestDir = DarcsMultipleChoiceOption
                   LeaveTestDir "don't remove the test directory",
                   DarcsNoArgOption [] ["remove-test-directory"]
                   NoLeaveTestDir "remove the test directory"]
-
-recordRollback = DarcsMultipleChoiceOption
-                 [DarcsNoArgOption [] ["record"]
-                  RecordRollback "record the rollback patch",
-                  DarcsNoArgOption [] ["no-record"]
-                  NoRecordRollback "don't record the rollback patch (only roll back in working dir, default)"]
 
 amendUnrecord = DarcsMultipleChoiceOption
                 [DarcsNoArgOption [] ["add"]

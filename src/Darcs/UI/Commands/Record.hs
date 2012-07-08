@@ -57,10 +57,11 @@ import Darcs.Repository
 import Darcs.Patch ( RepoPatch, Patchy, PrimOf, PrimPatch, namepatch, summaryFL, anonymous,
                      adddeps, fromPrims )
 import Darcs.Patch.Set ( PatchSet(..) )
-import Darcs.Witnesses.Eq ( unsafeCompare )
-import Darcs.Witnesses.Ordered ( FL(..), (:>)(..), (+>+),
-                             reverseRL, mapFL, mapFL_FL, nullFL )
-import Darcs.Witnesses.Sealed
+import Darcs.Patch.Witnesses.Sealed
+import Darcs.Patch.Witnesses.Eq ( unsafeCompare )
+import Darcs.Patch.Witnesses.Ordered
+    ( FL(..), (:>)(..), (+>+),
+    reverseRL, mapFL, mapFL_FL, nullFL )
 import Darcs.Patch.Info ( PatchInfo )
 import Darcs.Patch.Apply( ApplyState )
 import Darcs.Patch.Split ( primSplitter )

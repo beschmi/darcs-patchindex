@@ -59,12 +59,16 @@ import Darcs.Patch.Apply( ApplyState )
 import qualified Darcs.Patch ( thing, things )
 import Darcs.Patch.Show ( ShowPatch )
 import Darcs.Patch.Split ( Splitter(..) )
-import Darcs.Witnesses.Ordered ( FL(..), RL(..), (:>)(..), (:||:)(..),
-                       (+>+), lengthFL, mapFL_FL,
-                       spanFL, spanFL_M, reverseFL, (+<+), mapFL, filterFL )
-import Darcs.Witnesses.WZipper( FZipper(..), left, right
-                              , rightmost
-                              , toEnd, toStart)
+import Darcs.Patch.Witnesses.Ordered
+    ( FL(..), RL(..), (:>)(..), (:||:)(..),
+    (+>+), lengthFL, mapFL_FL,
+    spanFL, spanFL_M, reverseFL, (+<+), mapFL, filterFL )
+import Darcs.Patch.Witnesses.WZipper
+    ( FZipper(..), left, right
+    , rightmost
+    , toEnd, toStart)
+import Darcs.Patch.Witnesses.Sealed
+    ( FlippedSeal(..), flipSeal, seal2, unseal2, Sealed(..), Sealed2(..) )
 import Darcs.Patch.Choices ( PatchChoices, patchChoices,
                              patchChoicesTpsSub,
                              forceFirst, forceLast, makeUncertain, tag,
@@ -87,7 +91,6 @@ import Darcs.UI.Flags ( DarcsFlag( Summary, DontGrabDeps, Verbose, DontPromptFor
                               , SkipConflicts )
                    , isInteractive
     , toMatchFlags )
-import Darcs.Witnesses.Sealed ( FlippedSeal(..), flipSeal, seal2, unseal2, Sealed(..), Sealed2(..) )
 import Darcs.Utils ( askUser, promptChar, PromptConfig(..) )
 import Printer ( prefix, putDocLn )
 import Storage.Hashed.Tree( Tree )

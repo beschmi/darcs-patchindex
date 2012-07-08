@@ -49,7 +49,8 @@ import Darcs.Repository
     )
 import Darcs.Patch ( invert, effectOnFilePaths, commute )
 import Darcs.Patch.Split ( reversePrimSplitter )
-import Darcs.Witnesses.Ordered ( FL(..), (:>)(..), nullFL, (+>+) )
+import Darcs.Patch.Witnesses.Ordered ( FL(..), (:>)(..), nullFL, (+>+) )
+import Darcs.Patch.Witnesses.Sealed ( Sealed(..) )
 import Darcs.UI.SelectChanges
     ( selectChanges
     , WhichChanges(Last)
@@ -57,7 +58,6 @@ import Darcs.UI.SelectChanges
     , runSelection
     )
 import Darcs.Patch.TouchesFiles ( chooseTouching )
-import Darcs.Witnesses.Sealed ( Sealed(..) )
 
 
 revertDescription :: String

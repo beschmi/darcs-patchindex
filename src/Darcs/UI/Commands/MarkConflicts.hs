@@ -33,8 +33,8 @@ import Darcs.Repository ( withRepoLock, RepoJob(..), addToPending,
                     readRepo, unrecordedChanges, Repository
                     )
 import Darcs.Patch ( invert, PrimOf )
-import Darcs.Witnesses.Ordered ( FL(..) )
-import Darcs.Witnesses.Sealed ( Sealed(Sealed) )
+import Darcs.Patch.Witnesses.Ordered ( FL(..) )
+import Darcs.Patch.Witnesses.Sealed ( Sealed(Sealed) )
 import Darcs.Repository.Resolution ( patchsetConflictResolutions )
 import Darcs.Utils ( promptYorn )
 #include "impossible.h"

@@ -123,9 +123,10 @@ import Darcs.Patch.Apply( ApplyState )
 import Darcs.Patch.ApplyPatches( applyPatches )
 import Darcs.Patch.Depends ( getPatchesBeyondTag )
 
-import Darcs.Witnesses.Ordered ( RL(..), consRLSealed )
-import Darcs.Witnesses.Sealed ( FlippedSeal(..), Sealed2(..),
-                      seal, flipSeal, seal2, unsealFlipped, unseal2, unseal )
+import Darcs.Patch.Witnesses.Ordered ( RL(..), consRLSealed )
+import Darcs.Patch.Witnesses.Sealed
+    ( FlippedSeal(..), Sealed2(..),
+    seal, flipSeal, seal2, unsealFlipped, unseal2, unseal )
 import Printer ( text, ($$) )
 import Darcs.Patch.ApplyMonad ( ApplyMonad(..) )
 

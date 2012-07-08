@@ -42,8 +42,9 @@ import Darcs.Patch.Show ( ShowPatchBasic(..), ShowPatch(..), formatFileName )
 import Darcs.Patch.Apply ( Apply(..) )
 import Darcs.Patch.ApplyMonad ( ApplyMonadTrans, getApplyState
                               , ApplyMonad(..), toTree )
-import Darcs.Witnesses.Ordered ( RL(..), FL(..),
-                             mapFL, mapFL_FL, reverseRL, concatFL )
+import Darcs.Patch.Witnesses.Ordered
+    ( RL(..), FL(..),
+    mapFL, mapFL_FL, reverseRL, concatFL )
 
 showContextSeries :: forall p m wX wY. (Apply p, ShowPatch p, IsHunk p,
                       ApplyMonadTrans m (ApplyState p), ApplyMonad m (ApplyState p))

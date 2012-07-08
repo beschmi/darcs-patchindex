@@ -26,8 +26,8 @@ module Darcs.Patch.Split ( Splitter(..), rawSplitter, noSplitter, primSplitter, 
 
 import Data.List ( intersperse )
 
-import Darcs.Witnesses.Ordered
-import Darcs.Witnesses.Sealed
+import Darcs.Patch.Witnesses.Ordered
+import Darcs.Patch.Witnesses.Sealed
 
 import Darcs.Patch.FileHunk ( FileHunk(..), IsHunk(..) )
 import Darcs.Patch.Patchy ( ReadPatch(..), showPatch, ShowPatch(..), Invert(..) )

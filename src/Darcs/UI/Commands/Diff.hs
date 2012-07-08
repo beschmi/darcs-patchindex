@@ -60,14 +60,14 @@ import Darcs.Repository ( withRepository, RepoJob(..), readRepo )
 import Darcs.Repository.State ( readUnrecorded, restrictSubpaths
                               , readRecorded, unrecordedChanges
                               , UseIndex(..), ScanKnown(..), applyTreeFilter )
-import Darcs.Witnesses.Ordered ( mapRL, (:>)(..), (+>+), RL(..) )
-import Darcs.Witnesses.Unsafe ( unsafeCoercePEnd )
+import Darcs.Patch.Witnesses.Ordered ( mapRL, (:>)(..), (+>+), RL(..) )
+import Darcs.Patch.Witnesses.Unsafe ( unsafeCoercePEnd )
+import Darcs.Patch.Witnesses.Sealed ( unseal, Sealed(..), seal )
 import Darcs.Patch ( RepoPatch, apply, listTouchedFiles, invert, fromPrims, anonymous )
 import Darcs.Patch.Depends ( findCommonWithThem )
 import Darcs.Patch.Set ( PatchSet(..), newset2RL )
 import Darcs.Patch.Info ( PatchInfo, humanFriendly )
 import Darcs.Repository.Lock ( withTempDir )
-import Darcs.Witnesses.Sealed ( unseal, Sealed(..), seal )
 import Printer ( Doc, putDoc, vcat, empty, ($$) )
 
 #include "impossible.h"

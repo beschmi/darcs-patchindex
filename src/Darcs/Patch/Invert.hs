@@ -3,7 +3,7 @@ module Darcs.Patch.Invert
        )
        where
 
-import Darcs.Witnesses.Ordered ( FL(..), RL(..), reverseFL, reverseRL )
+import Darcs.Patch.Witnesses.Ordered ( FL(..), RL(..), reverseFL, reverseRL )
 
 
 class Invert p where

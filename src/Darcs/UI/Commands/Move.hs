@@ -47,8 +47,8 @@ import Darcs.Repository
     , addToPending
     , listFiles
     )
-import Darcs.Witnesses.Ordered ( FL(..), toFL )
-import Darcs.Witnesses.Sealed ( Sealed(..), unseal, freeGap, FreeLeft, unFreeLeft )
+import Darcs.Patch.Witnesses.Ordered ( FL(..), toFL )
+import Darcs.Patch.Witnesses.Sealed ( Sealed(..), unseal, freeGap, FreeLeft, unFreeLeft )
 import Darcs.Global ( debugMessage )
 import qualified Darcs.Patch
 import Darcs.Patch ( RepoPatch, PrimPatch )

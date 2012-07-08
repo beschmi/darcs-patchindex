@@ -15,7 +15,7 @@ import Darcs.Patch.ReadMonads (ParserM, takeTillChar,
                                anyChar, char, myLex',
                                skipSpace, skipWhile, linesStartingWith)
 
-import Darcs.Witnesses.Sealed ( seal )
+import Darcs.Patch.Witnesses.Sealed ( seal )
 
 import ByteStringUtils ( fromHex2PS )
 

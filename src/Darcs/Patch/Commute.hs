@@ -11,9 +11,10 @@ module Darcs.Patch.Commute
 
 import Darcs.Patch.CommuteFn ( CommuteFn )
 
-import Darcs.Witnesses.Ordered ( FL(..), RL(..), reverseFL, reverseRL,
-                                 (:>)(..), (:<)(..) )
-import Darcs.Witnesses.Sealed ( Sealed2, seal2 )
+import Darcs.Patch.Witnesses.Ordered
+    ( FL(..), RL(..), reverseFL, reverseRL,
+    (:>)(..), (:<)(..) )
+import Darcs.Patch.Witnesses.Sealed ( Sealed2, seal2 )
 
 -- | Commute represents things that can be (possibly) commuted.
 class Commute p where

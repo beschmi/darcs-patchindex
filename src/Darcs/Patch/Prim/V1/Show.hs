@@ -24,7 +24,7 @@ import Darcs.Patch.Prim.Class ( PrimShow(..) )
 import Darcs.Patch.Prim.V1.Core
      ( Prim(..), FilePatchType(..), DirPatchType(..) )
 import Darcs.Patch.Prim.V1.Details ()
-import Darcs.Witnesses.Show ( appPrec, Show1(..), Show2(..), ShowDict(..) )
+import Darcs.Patch.Witnesses.Show ( appPrec, Show1(..), Show2(..), ShowDict(..) )
 import Printer ( Doc, vcat,
                  text, userchunk, invisibleText, invisiblePS, blueText,
                  ($$), (<+>), (<>),

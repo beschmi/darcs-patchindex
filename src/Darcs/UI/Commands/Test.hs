@@ -56,16 +56,17 @@ import Darcs.Repository (
                         , setScriptsExecutablePatches
                         , setScriptsExecutable
                         )
-import Darcs.Witnesses.Ordered ( RL(..)
-                               , (:<)(..)
-                               , (+<+)
-                               , reverseRL
-                               , splitAtRL
-                               , lengthRL
-                               , mapRL
-                               , mapFL
-                               , mapRL_RL
-                               )
+import Darcs.Patch.Witnesses.Ordered
+    ( RL(..)
+    , (:<)(..)
+    , (+<+)
+    , reverseRL
+    , splitAtRL
+    , lengthRL
+    , mapRL
+    , mapFL
+    , mapRL_RL
+    )
 import Darcs.Patch.Conflict ( Conflict )
 import Darcs.Patch.FileHunk ( IsHunk )
 import Darcs.Patch.ApplyMonad ( ApplyMonad )

@@ -1,0 +1,43 @@
+if [ x${REMOTE_DIR} = x ]; then
+  REMOTE_DIR=sshtest
+fi
+
+if [ x"${USE_PUTTY}" != x ]; then
+  DARCS_SSH=plink
+  export DARCS_SSH
+  DARCS_SCP=pscp
+  export DARCS_SCP
+  DARCS_SFTP=psftp
+  export DARCS_SFTP
+fi
+
+if [ x"${USE_CONTROL_MASTER}" != x ]; then
+  DARCS_SSH_FLAGS="--ssh-cm"
+  export DARCS_SSH_FLAGS
+fi
+
+if [ x"${DARCS_SSH}" = x ]; then
+  SSH=ssh
+else
+  SSH=${DARCS_SSH}
+fi
+
+rm -rf tempssh
+mkdir tempssh
+cd tempssh
+
+cleanup () {
+  cd ..
+  rm -rf tempssh
+}
+
+if [ x${REMOTE} = x ]; then
+  set +v
+  echo
+  echo "Note: to enable full SSH testing, set REMOTE to some SSH path first,"
+  echo "      e.g. REMOTE=you@server.org $0"
+  cleanup
+  exit 200
+fi
+
+# vim: syntax=sh:

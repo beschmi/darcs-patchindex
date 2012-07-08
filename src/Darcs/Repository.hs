@@ -208,15 +208,17 @@ import Darcs.Repository.InternalTypes ( modifyCache )
 import Darcs.Patch ( RepoPatch, PrimOf )
 import Darcs.Patch.Apply( ApplyState )
 
-import Darcs.Witnesses.Ordered ( FL(..)
-                               , RL(..)
-                               , bunchFL
-                               , mapFL
-                               , mapRL
-                               , lengthRL
-                               , (+>+)
-                               , (:\/:)(..)
-                               )
+import Darcs.Patch.Witnesses.Sealed ( Sealed(..) )
+import Darcs.Patch.Witnesses.Ordered
+    ( FL(..)
+    , RL(..)
+    , bunchFL
+    , mapFL
+    , mapRL
+    , lengthRL
+    , (+>+)
+    , (:\/:)(..)
+    )
 import Darcs.Repository.Format ( RepoProperty ( HashedInventory )
                                , RepoFormat
                                , createRepoFormat
@@ -265,11 +267,9 @@ import Darcs.Repository.Flags
     , ExternalMerge (..)
     , WantGuiPause (..)
     )
-import Darcs.Witnesses.Sealed ( Sealed(..) )
 
 import Darcs.Global ( darcsdir )
 import Darcs.URL ( isFile )
-import Darcs.UI.Flags ( useCache )
 import Darcs.SignalHandler ( catchInterrupt )
 import Printer ( Doc, text, hPutDocLn, putDocLn )
 
@@ -290,7 +290,7 @@ import qualified Codec.Archive.Tar as Tar
 import Codec.Compression.GZip ( compress, decompress )
 import qualified Data.ByteString.Char8 as BS
 import qualified Data.ByteString.Lazy.Char8 as BL
-import Darcs.Repository.FileMod (createPatchIndexDisk)
+
 #include "impossible.h"
 
 
@@ -314,7 +314,6 @@ createRepository useFormat1 useNoWorkingDir = do
   writeRepoFormat repoFormat (darcsdir++"/format")
   writeBinFile (darcsdir++"/hashed_inventory") ""
   writePristine "." emptyTree
-  withRepository (useCache []) $ RepoJob $ \repo -> createPatchIndexDisk repo
 
 data RepoSort = Hashed | Old
 

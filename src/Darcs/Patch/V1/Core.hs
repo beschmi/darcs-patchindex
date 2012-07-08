@@ -8,7 +8,7 @@ import Darcs.Patch.Debug ( PatchDebug(..) )
 import Darcs.Patch.Prim ( FromPrim(..), PrimOf, PrimPatchBase, PrimPatch )
 import Darcs.Patch.Repair ( Check )
 
-import Darcs.Witnesses.Ordered ( FL(..), RL )
+import Darcs.Patch.Witnesses.Ordered ( FL(..), RL )
 
 #include "impossible.h"
 

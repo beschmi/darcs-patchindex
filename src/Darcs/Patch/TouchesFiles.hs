@@ -32,8 +32,8 @@ import Darcs.Patch.Choices ( PatchChoices, Tag, TaggedPatch,
 import Darcs.Patch ( Patchy, invert )
 import Darcs.Patch.Apply ( ApplyState, applyToFilePaths, effectOnFilePaths )
 import Darcs.Patch.Inspect ( PatchInspect )
-import Darcs.Witnesses.Ordered ( FL(..), (:>)(..), mapFL_FL, (+>+) )
-import Darcs.Witnesses.Sealed ( Sealed, seal )
+import Darcs.Patch.Witnesses.Ordered ( FL(..), (:>)(..), mapFL_FL, (+>+) )
+import Darcs.Patch.Witnesses.Sealed ( Sealed, seal )
 import Storage.Hashed.Tree( Tree )
 
 selectTouching :: (Patchy p, PatchInspect p, ApplyState p ~ Tree)

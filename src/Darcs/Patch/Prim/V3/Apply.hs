@@ -15,7 +15,7 @@ import qualified Data.Map as M
 
 -- import Darcs.Patch.ApplyMonad ( ApplyMonad(..) )
 
-import Darcs.Witnesses.Ordered ( FL(..) )
+import Darcs.Patch.Witnesses.Ordered ( FL(..) )
 import Storage.Hashed.Hash( Hash(..) )
 
 #include "impossible.h"

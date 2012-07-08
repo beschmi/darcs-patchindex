@@ -51,12 +51,14 @@ import Darcs.Patch.PatchInfoAnd( PatchInfoAnd, hopefully, hopefullyM, info )
 import Darcs.Patch.Set ( PatchSet(..), Tagged(..), SealedPatchSet, newset2RL,
                          appendPSFL )
 import Darcs.Patch.Progress ( progressRL )
-import Darcs.Witnesses.Eq ( EqCheck(..), (=\/=), (=/\=) )
-import Darcs.Witnesses.Unsafe ( unsafeCoerceP, unsafeCoercePStart )
-import Darcs.Witnesses.Ordered ( (:\/:)(..), (:/\:)(..), (:>)(..), Fork(..),
-                                 (+>+), mapFL, RL(..), FL(..), isShorterThanRL,
-                                 (+<+), reverseFL, reverseRL, mapRL )
-import Darcs.Witnesses.Sealed (Sealed(..), FlippedSeal(..), flipSeal, seal )
+import Darcs.Patch.Witnesses.Eq ( EqCheck(..), (=\/=), (=/\=) )
+import Darcs.Patch.Witnesses.Unsafe ( unsafeCoerceP, unsafeCoercePStart )
+import Darcs.Patch.Witnesses.Ordered
+    ( (:\/:)(..), (:/\:)(..), (:>)(..), Fork(..),
+    (+>+), mapFL, RL(..), FL(..), isShorterThanRL,
+    (+<+), reverseFL, reverseRL, mapRL )
+import Darcs.Patch.Witnesses.Sealed
+    ( Sealed(..), FlippedSeal(..), flipSeal, seal )
 
 import Printer ( renderString, vcat )
 

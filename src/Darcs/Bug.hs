@@ -2,7 +2,6 @@
 module Darcs.Bug ( _bug, _bugDoc, _impossible, _fromJust
                  ) where
 
-import Data.Maybe(fromMaybe)
 import Printer ( Doc, errorDoc, text, ($$) )
 
 type BugStuff = (String, Int, String, String)
@@ -23,4 +22,6 @@ _impossible :: BugStuff -> a
 _impossible bs = _bug bs $ "Impossible case at "++_bugLoc bs
 
 _fromJust :: BugStuff -> Maybe a -> a
-_fromJust bs mx = fromMaybe (_bug bs $ "fromJust error at " ++ _bugLoc bs) mx
+_fromJust bs mx =
+  case mx of Nothing -> _bug bs $ "fromJust error at "++_bugLoc bs
+             Just x  -> x

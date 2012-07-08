@@ -35,7 +35,6 @@ module Darcs.UI.Flags
     , doReverse
     , usePacks
     , showChangesOnlyToFiles
-    , doRecordRollback
     , removeFromAmended
     , defaultFlag
     , getPosthookCmd
@@ -168,9 +167,7 @@ data DarcsFlag = Help | ListOptions | NoTest | Test
                | AllowUnrelatedRepos
                | Check | Repair | JustThisRepo
                | NullFlag
-               | RecordRollback | NoRecordRollback
                | NoAmendUnrecord | AmendUnrecord
-               | PatchIndexFlag
                  deriving ( Eq, Show )
 
 compression :: [DarcsFlag]
@@ -288,9 +285,6 @@ defaultFlag :: [DarcsFlag] -- ^ distractors
             -> [DarcsFlag] -- ^ updated flags
 defaultFlag alts def flags =
  if any (`elem` flags) alts then flags else def : flags
-
-doRecordRollback :: [DarcsFlag] -> Bool
-doRecordRollback = getBoolFlag RecordRollback NoRecordRollback
 
 removeFromAmended :: [DarcsFlag] -> Bool
 removeFromAmended = getBoolFlag AmendUnrecord NoAmendUnrecord

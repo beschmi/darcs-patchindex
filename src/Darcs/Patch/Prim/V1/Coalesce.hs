@@ -16,14 +16,16 @@ import Darcs.Patch.Prim.V1.Core
     , comparePrim, isIdentity
     )
 import Darcs.Patch.Prim.V1.Show ()
-import Darcs.Witnesses.Eq ( MyEq(..), EqCheck(..) )
-import Darcs.Witnesses.Ordered ( FL(..), RL(..), (:>)(..), (:<)(..)
-                               , reverseRL, mapFL, mapFL_FL
-                               , concatFL, lengthFL, (+>+) )
-import Darcs.Witnesses.Sealed ( unseal, Sealed2(..), unsafeUnseal2
-                              , Gap(..), unFreeLeft
-                              )
-import Darcs.Witnesses.Unsafe ( unsafeCoerceP, unsafeCoercePEnd )
+import Darcs.Patch.Witnesses.Eq ( MyEq(..), EqCheck(..) )
+import Darcs.Patch.Witnesses.Ordered
+    ( FL(..), RL(..), (:>)(..), (:<)(..)
+    , reverseRL, mapFL, mapFL_FL
+    , concatFL, lengthFL, (+>+) )
+import Darcs.Patch.Witnesses.Sealed
+    ( unseal, Sealed2(..), unsafeUnseal2
+    , Gap(..), unFreeLeft
+    )
+import Darcs.Patch.Witnesses.Unsafe ( unsafeCoerceP, unsafeCoercePEnd )
 import Darcs.Patch.Invert ( Invert(..) )
 import Darcs.Patch.Commute ( Commute(..) )
 -- import Darcs.Patch.Permutations () -- for Invert instance of FL

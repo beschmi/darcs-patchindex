@@ -56,7 +56,7 @@ import Darcs.Patch.Info ( humanFriendly, toXml, showPatchInfo )
 import Darcs.Patch.Match ( matchPatch, haveNonrangeMatch, getNonrangeMatchS  )
 import Darcs.Repository.Match ( getFirstMatch, getOnePatchset )
 import Darcs.Repository.Lock ( withTempDir )
-import Darcs.Witnesses.Sealed ( Sealed2(..), Sealed(..), seal )
+import Darcs.Patch.Witnesses.Sealed ( Sealed2(..), Sealed(..), seal )
 import qualified Darcs.Patch.Annotate as A
 import Printer ( putDocLn, Doc )
 
@@ -156,7 +156,7 @@ annotate' opts args@[_] repository = do
           showPath (n, File _) = BC.pack (path </> n)
           showPath (n, _) = BC.concat [BC.pack (path </> n), "/"]
       putStrLn $ fmt (BC.intercalate "\n" $ map showPath $
-                       map (\(x,y) -> (anchorPath "" x, y)) $ list s') $
+                        map (\(x,y) -> (anchorPath "" x, y)) $ list s') $
         A.annotateDirectory (invertRL patches) (fp2fn $ "./" ++ path) subs
     Just (File b) -> do con <- BC.concat `fmap` toChunks `fmap` readBlob b
                         putStrLn $ fmt con $ A.annotate (invertRL patches) (fp2fn $ "./" ++ path) con

@@ -36,8 +36,8 @@ import Darcs.Patch.ReadMonads (ParserM,
                                choice, lexChar, lexString,
                                checkConsumes )
 
-import Darcs.Witnesses.Ordered ( FL(..), RL, reverseFL )
-import Darcs.Witnesses.Sealed ( Sealed(..), mapSeal )
+import Darcs.Patch.Witnesses.Ordered ( FL(..), RL, reverseFL )
+import Darcs.Patch.Witnesses.Sealed ( Sealed(..), mapSeal )
 
 import Control.Applicative ( (<$>), (<|>) )
 import Control.Monad ( mzero )

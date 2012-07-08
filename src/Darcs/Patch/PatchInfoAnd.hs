@@ -18,7 +18,7 @@
 {-# LANGUAGE CPP, UndecidableInstances #-} -- XXX Undecidable only in GHC < 7
 
 
-module Darcs.Patch.PatchInfoAnd ( Hopefully, PatchInfoAnd(..),
+module Darcs.Patch.PatchInfoAnd ( Hopefully, PatchInfoAnd,
                          WPatchInfo, unWPatchInfo, compareWPatchInfo,
                          piap, n2pia, patchInfoAndPatch,
                          fmapPIAP, fmapFL_PIAP,
@@ -44,10 +44,10 @@ import Darcs.Patch.Patchy ( Patchy, ReadPatch(..), Apply(..), Invert(..),
                             ShowPatch(..), Commute(..), PatchInspect(..) )
 import Darcs.Patch.Repair ( Repair(..), RepairToFL )
 import Darcs.Patch.Show ( ShowPatchBasic(..) )
-import Darcs.Witnesses.Eq ( MyEq(..), EqCheck(..) )
-import Darcs.Witnesses.Unsafe ( unsafeCoerceP )
-import Darcs.Witnesses.Ordered ( (:>)(..), (:\/:)(..), (:/\:)(..), FL, mapFL )
-import Darcs.Witnesses.Sealed ( Sealed(Sealed), seal, mapSeal )
+import Darcs.Patch.Witnesses.Eq ( MyEq(..), EqCheck(..) )
+import Darcs.Patch.Witnesses.Unsafe ( unsafeCoerceP )
+import Darcs.Patch.Witnesses.Ordered ( (:>)(..), (:\/:)(..), (:/\:)(..), FL, mapFL )
+import Darcs.Patch.Witnesses.Sealed ( Sealed(Sealed), seal, mapSeal )
 import Darcs.Utils ( prettyException )
 import Storage.Hashed.Tree( Tree )
 

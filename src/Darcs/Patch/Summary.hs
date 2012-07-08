@@ -8,7 +8,7 @@ import Darcs.Patch.Conflict ( Conflict(..), IsConflictedPrim(IsC), ConflictState
 import Darcs.Patch.Effect ( Effect )
 import Darcs.Patch.Prim.Class ( PrimDetails(..), PrimPatchBase )
 import Darcs.Patch.SummaryData ( SummDetail(..), SummOp(..) )
-import Darcs.Witnesses.Ordered ( FL, mapFL )
+import Darcs.Patch.Witnesses.Ordered ( FL, mapFL )
 
 import Printer ( Doc, empty, vcat,
                  text,

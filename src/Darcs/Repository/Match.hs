@@ -41,6 +41,7 @@ import Darcs.Patch.ApplyMonad ( ApplyMonad(..) )
 import Darcs.Patch.Apply( ApplyState )
 import Darcs.Patch ( RepoPatch )
 import Darcs.Patch.Set ( PatchSet(..), SealedPatchSet, Origin )
+import Darcs.Patch.Witnesses.Sealed ( seal )
 
 import Darcs.Repository.Internal
     ( Repository, readRepo, createPristineDirectoryTree )
@@ -48,10 +49,6 @@ import Darcs.Repository.Internal
 import Storage.Hashed.Tree ( Tree )
 
 import Darcs.Path ( FileName, toFilePath )
-
-import Darcs.Witnesses.Sealed
-    ( seal )
-
 
 import ByteStringUtils ( mmapFilePS )
 #include "impossible.h"

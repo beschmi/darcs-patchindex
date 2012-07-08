@@ -34,9 +34,7 @@
 module Darcs.Patch.Annotate
     (
       annotate
-    , annotatePI
     , annotateDirectory
-    , annotateDirectoryPI
     , format
     , machineFormat
     ) where
@@ -59,13 +57,12 @@ import Darcs.Path( FileName, movedirfilename, fn2ps, ps2fn )
 import Darcs.Patch.Apply ( Apply, apply, ApplyState )
 import Darcs.Patch.Info ( PatchInfo(..), humanFriendly, piAuthor, makeFilename )
 import Darcs.Patch.PatchInfoAnd( info, PatchInfoAnd )
-import Darcs.Witnesses.Ordered
+import Darcs.Patch.Witnesses.Ordered
 
 import Storage.Hashed.Tree( Tree )
 import Lcs( getChanges )
 import Printer( renderString )
 import ByteStringUtils ( linesPS, unlinesPS )
-import Darcs.Witnesses.Sealed
 
 #include "impossible.h"
 
@@ -198,30 +195,6 @@ annotate patches inipath inicontent = annotate' patches initial
                                                       (Nothing, B.empty)
                         }
 
-annotatePI' :: (Apply p, ApplyState p ~ Tree)
-            => [Sealed2 (PatchInfoAnd p)]
-            -> Annotated
-            -> Annotated
-annotatePI' ([]) ann = ann
-annotatePI' (Sealed2 p: ps) ann
-    | complete ann = ann
-    | otherwise = annotatePI' ps $ execState (apply p) (ann { currentInfo = info p })
-
-
-annotatePI :: (Apply p, ApplyState p ~ Tree)
-           => [Sealed2 (PatchInfoAnd p)]
-           -> FileName
-           -> B.ByteString
-           -> Annotated
-annotatePI patches inipath inicontent = annotatePI' patches initial
-  where
-    initial = Annotated { path = Just inipath
-                        , currentInfo = error "There is no currentInfo."
-                        , current = zip [0..] (linesPS inicontent)
-                        , what = File
-                        , annotated = V.replicate (length $ breakLines inicontent)
-                                                      (Nothing, B.empty)
-                        }
 
 annotateDirectory :: (Apply p, ApplyState p ~ Tree)
                   => FL (PatchInfoAnd p) wX wY
@@ -236,21 +209,6 @@ annotateDirectory patches inipath inicontent = annotate' patches initial
                         , what = Directory
                         , annotated = V.replicate (length inicontent) (Nothing, B.empty)
                         }
-
-annotateDirectoryPI :: (Apply p, ApplyState p ~ Tree)
-                    => [Sealed2 (PatchInfoAnd p)]
-                    -> FileName
-                    -> [FileName]
-                    -> Annotated
-annotateDirectoryPI patches inipath inicontent = annotatePI' patches initial
-  where
-    initial = Annotated { path = Just inipath
-                        , currentInfo = error "There is no currentInfo."
-                        , current = zip [0..] (map fn2ps inicontent)
-                        , what = Directory
-                        , annotated = V.replicate (length inicontent) (Nothing, B.empty)
-                        }
-
 
 
 machineFormat :: B.ByteString -> Annotated -> String

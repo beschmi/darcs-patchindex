@@ -4,7 +4,7 @@ module Darcs.Patch.Repair
 
 import Darcs.Patch.Apply ( Apply(..) )
 import Darcs.Patch.ApplyMonad ( ApplyMonad )
-import Darcs.Witnesses.Ordered ( FL(..), RL(..), mapFL, mapRL, (+>+) )
+import Darcs.Patch.Witnesses.Ordered ( FL(..), RL(..), mapFL, mapRL, (+>+) )
 import Printer ( Doc )
 
 import Data.Maybe ( catMaybes, listToMaybe )

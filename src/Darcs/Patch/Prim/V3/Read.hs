@@ -6,7 +6,7 @@ import Darcs.Patch.ReadMonads
 import Darcs.Patch.Prim.Class( PrimRead(..) )
 import Darcs.Patch.Prim.V3.Core( Prim(..), Hunk(..) )
 import Darcs.Patch.Prim.V3.ObjectMap
-import Darcs.Witnesses.Sealed( seal )
+import Darcs.Patch.Witnesses.Sealed( seal )
 
 import Control.Applicative ( (<$>) )
 import Control.Monad ( liftM, liftM2 )

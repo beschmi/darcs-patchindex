@@ -93,9 +93,10 @@ import Darcs.Repository ( PatchSet, Repository,
 import Darcs.Patch.Set ( Origin )
 import Darcs.Patch.Apply( ApplyState )
 import Darcs.Patch ( RepoPatch, description, applyToTree, invert )
-import Darcs.Witnesses.Unsafe ( unsafeCoerceP )
-import Darcs.Witnesses.Ordered ( FL(..), (:>)(..), (:\/:)(..), (:>)(..),
-                       mapFL, mapFL_FL, lengthFL, nullFL )
+import Darcs.Patch.Witnesses.Unsafe ( unsafeCoerceP )
+import Darcs.Patch.Witnesses.Ordered
+    ( FL(..), (:>)(..), (:\/:)(..), (:>)(..),
+    mapFL, mapFL_FL, lengthFL, nullFL )
 import Darcs.Patch.Bundle ( makeBundleN, scanContext, patchFilename )
 import Darcs.Repository.Prefs ( setDefaultrepo, getPreflist )
 import Darcs.Repository.External ( fetchFilePS, Cachable(..) )

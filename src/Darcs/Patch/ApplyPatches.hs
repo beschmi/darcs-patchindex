@@ -9,7 +9,7 @@ import Darcs.Patch.Apply ( Apply(..) )
 import Darcs.Patch.Patchy ( Patchy )
 import Darcs.Patch.MonadProgress ( MonadProgress, ProgressAction(..), runProgressActions)
 
-import Darcs.Witnesses.Ordered ( FL(..), mapFL )
+import Darcs.Patch.Witnesses.Ordered ( FL(..), mapFL )
 import Printer ( text, ($$) )
 
 applyPatches :: (MonadProgress m, ApplyMonad m (ApplyState p), Patchy p)

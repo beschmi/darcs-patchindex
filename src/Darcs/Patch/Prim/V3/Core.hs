@@ -29,7 +29,7 @@ module Darcs.Patch.Prim.V3.Core
 
 import qualified Data.ByteString as BS
 
-import Darcs.Witnesses.Eq ( MyEq(..) )
+import Darcs.Patch.Witnesses.Eq ( MyEq(..) )
 import Darcs.Patch.FileHunk( IsHunk(..) )
 import Darcs.Patch.Invert ( Invert(..) )
 import Darcs.Patch.Inspect ( PatchInspect(..) )

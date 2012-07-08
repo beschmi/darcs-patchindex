@@ -39,7 +39,8 @@ import Darcs.Repository ( SealedPatchSet, Repository, withRepoLock, RepoJob(..),
 import Darcs.Patch ( RepoPatch, PrimOf, commute, namepatch, fromPrims )
 import Darcs.Patch.Apply( ApplyState )
 import Darcs.Patch.Set ( Origin )
-import Darcs.Witnesses.Ordered ( FL(..), (:>)(..), (+>+) )
+import Darcs.Patch.Witnesses.Sealed ( Sealed(Sealed) )
+import Darcs.Patch.Witnesses.Ordered ( FL(..), (:>)(..), (+>+) )
 import Darcs.UI.SelectChanges
     ( selectChanges
     , WhichChanges(First)
@@ -55,7 +56,6 @@ import Darcs.Patch.Bundle ( scanBundle, makeBundleN )
 import IsoDate ( getIsoDateTime )
 import Darcs.SignalHandler ( withSignalsBlocked )
 import Progress ( debugMessage )
-import Darcs.Witnesses.Sealed ( Sealed(Sealed) )
 #include "impossible.h"
 
 unrevertDescription :: String

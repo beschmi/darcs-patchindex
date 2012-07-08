@@ -17,11 +17,14 @@ import Data.Maybe ( fromJust )
 
 import Darcs.Patch.Commute ( Commute )
 import Darcs.Patch.CommuteFn ( MergeFn )
-import Darcs.Witnesses.Ordered ( (:\/:)(..), (:/\:)(..),
-                                 FL(..), RL,
-                                 reverseFL, reverseRL
-                               )
-
+import Darcs.Patch.Witnesses.Ordered
+    ( (:\/:)(..)
+    , (:/\:)(..)
+    , FL(..)
+    , RL
+    , reverseFL
+    , reverseRL
+    )
 
 -- | Things that can always be merged
 class Commute p => Merge p where

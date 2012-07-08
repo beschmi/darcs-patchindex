@@ -17,10 +17,11 @@ import System.Directory ( createDirectoryIfMissing, getCurrentDirectory,
 import Darcs.Path( anchorPath, AbsolutePath, ioAbsolute, toFilePath )
 import Darcs.Patch.PatchInfoAnd ( PatchInfoAnd, info, winfo, WPatchInfo, unWPatchInfo, compareWPatchInfo )
 
-import Darcs.Witnesses.Eq ( EqCheck(..) )
-import Darcs.Witnesses.Ordered ( FL(..), RL(..), lengthFL, reverseFL,
-                                 mapRL, nullFL, (:||:)(..) )
-import Darcs.Witnesses.Sealed ( Sealed2(..), Sealed(..), unFreeLeft )
+import Darcs.Patch.Witnesses.Eq ( EqCheck(..) )
+import Darcs.Patch.Witnesses.Ordered
+    ( FL(..), RL(..), lengthFL, reverseFL,
+    mapRL, nullFL, (:||:)(..) )
+import Darcs.Patch.Witnesses.Sealed ( Sealed2(..), Sealed(..), unFreeLeft )
 import Darcs.Patch.Apply( ApplyState )
 import Darcs.Patch.Repair ( Repair(applyAndTryToFix) )
 import Darcs.Patch.PatchInfoAnd( hopefully )

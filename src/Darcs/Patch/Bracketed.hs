@@ -5,7 +5,7 @@ module Darcs.Patch.Bracketed
 
 
 import Darcs.Patch.Format ( PatchListFormat )
-import Darcs.Witnesses.Ordered ( FL(..), mapFL_FL, concatFL )
+import Darcs.Patch.Witnesses.Ordered ( FL(..), mapFL_FL, concatFL )
 
 -- |This type exists for legacy support of on-disk format patch formats.
 -- It is a wrapper type that explicitly tracks the nesting of braces and parens

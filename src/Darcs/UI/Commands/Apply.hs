@@ -82,8 +82,10 @@ import Darcs.Patch ( RepoPatch, description, PrimOf )
 import Darcs.Patch.Apply( ApplyState )
 import Darcs.Patch.Info ( PatchInfo, humanFriendly )
 import Darcs.Utils ( PromptConfig(..), promptChar )
-import Darcs.Witnesses.Ordered ( FL, RL(..), (:\/:)(..), (:>)(..),
-                       mapFL, mapRL, nullFL, reverseFL )
+import Darcs.Patch.Witnesses.Ordered
+    ( FL, RL(..), (:\/:)(..), (:>)(..),
+    mapFL, mapRL, nullFL, reverseFL )
+import Darcs.Patch.Witnesses.Sealed ( Sealed(Sealed) )
 import ByteStringUtils ( linesPS, unlinesPS, gzReadStdin )
 import Data.List( (\\) )
 import qualified Data.ByteString as B (ByteString, null, init, take, drop)
@@ -108,7 +110,6 @@ import Darcs.UI.SelectChanges
     , filterOutConflicts
     )
 import Darcs.Patch.Bundle ( scanBundle )
-import Darcs.Witnesses.Sealed ( Sealed(Sealed) )
 import Printer ( packedString, vcat, text, empty, renderString )
 import Storage.Hashed.Tree( Tree )
 

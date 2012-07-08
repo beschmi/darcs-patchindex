@@ -44,6 +44,10 @@ import Darcs.Patch.Apply ( ApplyState )
 import Darcs.Patch.Depends( merge2FL )
 import Darcs.Patch.PatchInfoAnd ( PatchInfoAnd, n2pia, hopefully )
 import Darcs.Patch.Progress( progressFL )
+import Darcs.Patch.Witnesses.Ordered
+    ( FL(..), (:\/:)(..), (:/\:)(..), (+>+),
+    mapFL_FL, concatFL )
+import Darcs.Patch.Witnesses.Sealed( Sealed(Sealed), seal )
 import Darcs.Repository.InternalTypes( Repository(..) )
 import Darcs.Repository.State( unrecordedChanges, readUnrecorded )
 import Darcs.Repository.Resolution ( standardResolution, externalResolution )
@@ -52,10 +56,6 @@ import Darcs.Repository.Internal ( announceMergeConflicts,
                                    setTentativePending, tentativelyAddPatch_,
                                    applyToTentativePristine,
                                    UpdatePristine(..) )
-import Darcs.Witnesses.Ordered ( FL(..), (:\/:)(..), (:/\:)(..), (+>+),
-                                 mapFL_FL, concatFL )
-import Darcs.Witnesses.Sealed( Sealed(Sealed), seal )
-
 import Progress( debugMessage )
 
 tentativelyMergePatches_ :: forall p wR wU wT wY wX. (RepoPatch p,

@@ -62,10 +62,8 @@ import Darcs.Patch  ( PrimPatch
                     , invert
                     )
 import Darcs.Repository.Prefs ( FileType(..) )
-import Darcs.Witnesses.Ordered  ( FL(..)
-                                , (+>+)
-                                )
-import Darcs.Witnesses.Sealed ( Gap(..) )
+import Darcs.Patch.Witnesses.Ordered ( FL(..), (+>+) )
+import Darcs.Patch.Witnesses.Sealed ( Gap(..) )
 
 
 #include "impossible.h"

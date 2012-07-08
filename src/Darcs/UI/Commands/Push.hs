@@ -62,8 +62,9 @@ import Darcs.Repository ( Repository, withRepoReadLock, RepoJob(..), identifyRep
                           readRepo, checkUnrelatedRepos )
 import Darcs.Patch ( RepoPatch, description )
 import Darcs.Patch.Apply( ApplyState )
-import Darcs.Witnesses.Ordered ( (:>)(..), RL, FL, nullRL,
-                             nullFL, reverseFL, mapFL_FL, mapRL )
+import Darcs.Patch.Witnesses.Ordered
+    ( (:>)(..), RL, FL, nullRL,
+    nullFL, reverseFL, mapFL_FL, mapRL )
 import Darcs.Repository.Prefs ( setDefaultrepo, getPreflist )
 import Darcs.UI.External ( maybeURLCmd, signString )
 import Darcs.URL ( isHttpUrl, isFile )

@@ -51,10 +51,11 @@ import Darcs.Patch.Show ( ShowPatchBasic(..), ShowPatch(..), showNamedPrefix )
 import Darcs.Patch.Summary ( plainSummary )
 import Darcs.Patch.Viewing () -- for ShowPatch FL instances
 
-import Darcs.Witnesses.Eq ( MyEq(..) )
-import Darcs.Witnesses.Ordered ( (:>)(..), (:\/:)(..), (:/\:)(..), FL, mapFL, mapFL_FL )
-import Darcs.Witnesses.Sealed ( Sealed, mapSeal )
-import Darcs.Witnesses.Show ( ShowDict(..), Show1(..), Show2(..) )
+import Darcs.Patch.Witnesses.Eq ( MyEq(..) )
+import Darcs.Patch.Witnesses.Ordered
+    ( (:>)(..), (:\/:)(..), (:/\:)(..), FL, mapFL, mapFL_FL )
+import Darcs.Patch.Witnesses.Sealed ( Sealed, mapSeal )
+import Darcs.Patch.Witnesses.Show ( ShowDict(..), Show1(..), Show2(..) )
 
 import Printer ( renderString, ($$), (<+>), (<>), prefix, text, vcat )
 

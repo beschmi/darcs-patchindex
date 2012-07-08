@@ -65,8 +65,8 @@ import Darcs.Repository
     )
 import Darcs.Repository.Prefs ( filetypeFunction )
 import Darcs.UI.PrintPatch ( printPatch, contextualPrintPatch )
-import Darcs.Witnesses.Ordered ( FL(..), reverseRL, reverseFL, (:>)(..) )
-import Darcs.Witnesses.Sealed ( Sealed(..), unFreeLeft )
+import Darcs.Patch.Witnesses.Ordered ( FL(..), reverseRL, reverseFL, (:>)(..) )
+import Darcs.Patch.Witnesses.Sealed ( Sealed(..), unFreeLeft )
 import Printer ( putDocLn, renderString, vcat, text )
 
 whatsnew :: DarcsCommand

@@ -15,8 +15,8 @@ import Darcs.Patch.Inspect ( PatchInspect(..) )
 import Darcs.Patch.Invert ( Invert(..) )
 import Darcs.Patch.Permutations ()
 import Darcs.Patch.Prim ( PrimPatch, is_filepatch, primIsHunk, primFromHunk )
-import Darcs.Witnesses.Ordered ( FL(..) )
-import Darcs.Witnesses.Sealed ( Sealed(..), mapSeal )
+import Darcs.Patch.Witnesses.Ordered ( FL(..) )
+import Darcs.Patch.Witnesses.Sealed ( Sealed(..), mapSeal )
 
 #include "impossible.h"
 

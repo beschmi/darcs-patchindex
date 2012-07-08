@@ -6,8 +6,13 @@ module Darcs.Patch.CommuteFn
       mergerIdFL
     ) where
 
-import Darcs.Witnesses.Ordered ( (:>)(..), (:\/:)(..), (:/\:)(..)
-                               , FL(..), RL(..) )
+import Darcs.Patch.Witnesses.Ordered
+    ( (:>)(..)
+    , (:\/:)(..)
+    , (:/\:)(..)
+    , FL(..)
+    , RL(..)
+    )
 
 -- |CommuteFn is the basis of a general framework for building up commutation
 -- operations between different patch types in a generic manner. Unfortunately

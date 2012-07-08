@@ -64,8 +64,8 @@ import Darcs.Repository
     , listRegisteredFiles
     )
 import Darcs.Repository.Prefs ( FileType(TextFile) )
-import Darcs.Witnesses.Ordered ( FL(..), (+>+), concatFL, toFL )
-import Darcs.Witnesses.Sealed ( Sealed(..), mapSeal, FreeLeft, Gap(..) )
+import Darcs.Patch.Witnesses.Ordered ( FL(..), (+>+), concatFL, toFL )
+import Darcs.Patch.Witnesses.Sealed ( Sealed(..), mapSeal, FreeLeft, Gap(..) )
 
 #include "impossible.h"
 

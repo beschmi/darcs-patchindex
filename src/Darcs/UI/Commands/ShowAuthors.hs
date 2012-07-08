@@ -38,7 +38,7 @@ import Darcs.Patch.PatchInfoAnd ( info )
 import Darcs.Patch.Info ( piAuthor )
 import Darcs.Patch.Set ( newset2RL )
 import Darcs.Repository ( readRepo, withRepository, RepoJob(..) )
-import Darcs.Witnesses.Ordered ( mapRL )
+import Darcs.Patch.Witnesses.Ordered ( mapRL )
 import Printer ( text )
 import qualified Ratified( readFile )
 

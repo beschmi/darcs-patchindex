@@ -11,7 +11,7 @@ import Darcs.Patch.V1.Commute ()
 import Darcs.Patch.V1.Core ( Patch(..) )
 import Darcs.Patch.Apply( ApplyState )
 
-import Darcs.Witnesses.Ordered ( mapFL_FL )
+import Darcs.Patch.Witnesses.Ordered ( mapFL_FL )
 
 
 instance PrimPatch prim => Apply (Patch prim) where

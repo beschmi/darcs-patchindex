@@ -7,8 +7,8 @@ import Data.List ( intersect )
 
 import qualified Data.ByteString as BS (length)
 
-import Darcs.Witnesses.Ordered ( (:>)(..) )
-import Darcs.Witnesses.Unsafe ( unsafeCoerceP )
+import Darcs.Patch.Witnesses.Ordered ( (:>)(..) )
+import Darcs.Patch.Witnesses.Unsafe ( unsafeCoerceP )
 import Darcs.Patch.Prim.V3.Core ( Prim(..), Hunk(..), touches )
 import Darcs.Patch.Commute ( Commute(..) )
 import Darcs.Patch.Permutations () -- for Invert instance of FL

@@ -7,11 +7,11 @@ import Darcs.Patch.Effect ( Effect(..) )
 import Darcs.Patch.Inspect ( PatchInspect(..) )
 import Darcs.Patch.Permutations ()
 import Darcs.Patch.Prim.Class ( PrimOf )
-import Darcs.Witnesses.Ordered
+import Darcs.Patch.Witnesses.Ordered
     ( FL(..), RL(..), (:>)(..)
     , mapFL, reverseFL, mapRL, reverseRL
     )
-import Darcs.Witnesses.Sealed ( Sealed, unseal )
+import Darcs.Patch.Witnesses.Sealed ( Sealed, unseal )
 import Darcs.Utils ( nubsort )
 
 

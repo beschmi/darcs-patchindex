@@ -31,9 +31,10 @@ module Darcs.Patch.Set
 
 import Darcs.Patch.Info ( PatchInfo )
 import Darcs.Patch.PatchInfoAnd ( PatchInfoAnd, info )
-import Darcs.Witnesses.Ordered ( FL, RL(..), (+<+), reverseFL, reverseRL,
-                                 mapRL_RL, concatRL, mapRL )
-import Darcs.Witnesses.Sealed ( Sealed )
+import Darcs.Patch.Witnesses.Sealed ( Sealed )
+import Darcs.Patch.Witnesses.Ordered
+    ( FL, RL(..), (+<+), reverseFL, reverseRL,
+    mapRL_RL, concatRL, mapRL )
 
 import Progress ( progress )
 

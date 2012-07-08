@@ -95,7 +95,6 @@ import System.Posix.Files ( isDirectory, getSymbolicLinkStatus )
 import ByteStringUtils ( packStringToUTF8, unpackPSFromUTF8 )
 import qualified Data.ByteString.Char8 as BC (unpack, pack)
 import qualified Data.ByteString       as B  (ByteString)
-import Data.Binary
 
 import Darcs.Global ( darcsdir )
 import Darcs.URL ( isAbsolute, isRelative, isSshNopath )
@@ -109,10 +108,6 @@ newtype FileName = FN FilePath deriving ( Eq, Ord )
 instance Show FileName where
    showsPrec d (FN fp) = showParen (d > appPrec) $ showString "fp2fn " . showsPrec (appPrec + 1) fp
       where appPrec = 10
-
-instance Binary FileName where
-  put (FN h) = put h
-  get = FN `fmap` get
 
 {-# INLINE fp2fn #-}
 fp2fn :: FilePath -> FileName
